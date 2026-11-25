@@ -3,12 +3,15 @@
 reproducible text heuristics, then average by track or benchmark a draft.
 
 Usage:
-    # Per-track averages for a corpus (markdown tables):
+    # Per-track averages for a corpus (markdown tables). With several years,
+    # also prints a track-by-year comparison; --year limits to one year:
     python3 tools/score_sessions.py corpus data/kcdc-2026.json
+    python3 tools/score_sessions.py corpus "data/kcdc-*.json"
 
     # Score drafts and compare to the target track's accepted average:
     python3 tools/score_sessions.py draft data/kcdc-2026.json --track "Human Skills" \
         --title "My Title" draft1.txt [draft2.txt ...]
+    # Draft benchmarks use ONE year: --year, or the latest year in the data.
 
 Weights and categories come from
 .claude/skills/cfp-speaker-abstracts/references/category-ranking.md.
@@ -23,6 +26,10 @@ import math
 import pathlib
 import re
 import statistics as st
+import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from sessions_io import load, summary, years  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CHECKER = ROOT / ".claude/skills/humanize-writing/scripts/check_ai_tells.py"
@@ -195,14 +202,19 @@ def score(title: str, abstract: str, fmt: str, track_fit: int) -> dict:
     return s
 
 
-def corpus_scores(path: str) -> tuple[list[dict], TrackModel]:
-    data = json.load(open(path, encoding="utf-8"))
+def corpus_scores(path: str, year: int | None = None) -> tuple[list[dict], TrackModel]:
+    """Score one conference-year. Quintiles and track vocabularies are per year,
+    because tracks and topic mix change from year to year."""
+    data = load(path, year=year)
+    if len(years(data)) > 1 or len({x["conference"] for x in data}) > 1:
+        raise SystemExit(f"corpus_scores needs one conference-year, got: {summary(data)}")
     set_quintiles(data)
     model = TrackModel(data)
     out = []
     for i, x in enumerate(data):
         fit = model.fit(model.docs[i], x["track"], exclude=i)
-        out.append({**score(x["title"], x["abstract"], x["format"], fit), "track": x["track"]})
+        out.append({**score(x["title"], x["abstract"], x["format"], fit), "track": x["track"],
+                    "year": int(x["year"]), "conference": x["conference"]})
     return out, model
 
 
@@ -212,7 +224,18 @@ def averages(rows: list[dict]) -> dict:
 
 
 def cmd_corpus(a) -> None:
-    rows, _ = corpus_scores(a.corpus)
+    all_rows = load(a.corpus, year=a.year)
+    yrs = years(all_rows)
+    if len({x["conference"] for x in all_rows}) > 1:
+        raise SystemExit(f"Score one conference at a time, got: {summary(all_rows)}")
+    if len(yrs) > 1:
+        by_year = {y: corpus_scores(a.corpus, y)[0] for y in yrs}
+        print_year_comparison(by_year)
+        print(f"\n# Latest year ({yrs[-1]}) in detail\n")
+        rows = by_year[yrs[-1]]
+    else:
+        rows, _ = corpus_scores(a.corpus, yrs[0])
+    print(f"DATA: {summary([r for r in all_rows if int(r['year']) == int(rows[0]['year'])])}\n")
     overall = averages(rows)
     by = {t: averages([r for r in rows if r["track"] == t]) for t in sorted({r["track"] for r in rows})}
     counts = collections.Counter(r["track"] for r in rows)
@@ -235,8 +258,32 @@ def cmd_corpus(a) -> None:
     print("| **All** | " + " | ".join(f"**{overall[k]:.1f}**" for k in WEIGHTS) + " |")
 
 
+def print_year_comparison(by_year: dict[int, list[dict]]) -> None:
+    yrs = sorted(by_year)
+    tracks = sorted({r["track"] for rows in by_year.values() for r in rows})
+    print(f"## Average total by track and year (max {MAX_TOTAL})\n")
+    print("| Track | " + " | ".join(str(y) for y in yrs) + " | Δ first→last |")
+    print("|---|" + "---|" * (len(yrs) + 1))
+    for t in tracks:
+        vals = []
+        for y in yrs:
+            tr = [r["Total"] for r in by_year[y] if r["track"] == t]
+            vals.append(st.mean(tr) if tr else None)
+        cells = [f"{v:.1f} (n={sum(r['track'] == t for r in by_year[y])})" if v is not None else "—"
+                 for v, y in zip(vals, yrs)]
+        delta = f"{vals[-1] - vals[0]:+.1f}" if vals[0] is not None and vals[-1] is not None else "—"
+        print(f"| {t} | " + " | ".join(cells) + f" | {delta} |")
+    alls = [st.mean(r["Total"] for r in by_year[y]) for y in yrs]
+    print("| **All** | " + " | ".join(f"**{v:.1f}** (n={len(by_year[y])})" for v, y in zip(alls, yrs))
+          + f" | {alls[-1] - alls[0]:+.1f} |")
+    print("\nTracks are renamed, added and dropped between years; '—' means the track didn't exist that year.")
+
+
 def cmd_draft(a) -> None:
-    rows, model = corpus_scores(a.corpus)
+    yr = a.year or years(load(a.corpus))[-1]
+    rows, model = corpus_scores(a.corpus, yr)
+    if a.track not in {r["track"] for r in rows}:
+        raise SystemExit(f"No track {a.track!r} in {yr}. Tracks that year: " + ", ".join(sorted({r['track'] for r in rows})))
     bench = averages([r for r in rows if r["track"] == a.track])
     overall = averages(rows)
     fmt = {"session": "Session", "half": "Half-Day", "full": "Full-Day"}[a.format]
@@ -248,7 +295,8 @@ def cmd_draft(a) -> None:
         results.append((pathlib.Path(p).stem, score(a.title, text, fmt, model.fit(counts, a.track)),
                         [t for _, t in sims[:4]]))
     names = [r[0] for r in results]
-    print(f"Benchmark: {a.track} accepted avg (n={sum(r['track'] == a.track for r in rows)}) and all sessions\n")
+    print(f"Benchmark: {rows[0]['conference']} {yr}, {a.track} accepted avg "
+          f"(n={sum(r['track'] == a.track for r in rows)}) and all sessions\n")
     print("| Category (W) | " + " | ".join(names) + f" | {a.track} avg | All avg |")
     print("|---|" + "---|" * (len(names) + 2))
     for k in WEIGHTS:
@@ -266,11 +314,13 @@ def main() -> None:
     sub = ap.add_subparsers(dest="cmd", required=True)
     c = sub.add_parser("corpus")
     c.add_argument("corpus")
+    c.add_argument("--year", type=int, help="score only this year")
     d = sub.add_parser("draft")
     d.add_argument("corpus")
     d.add_argument("--track", required=True)
     d.add_argument("--title", required=True)
     d.add_argument("--format", choices=TARGETS, default="session")
+    d.add_argument("--year", type=int, help="benchmark year (default: latest year in the data)")
     d.add_argument("drafts", nargs="+")
     a = ap.parse_args()
     cmd_corpus(a) if a.cmd == "corpus" else cmd_draft(a)

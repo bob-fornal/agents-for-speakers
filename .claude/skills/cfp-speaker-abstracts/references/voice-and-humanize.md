@@ -13,20 +13,22 @@ Both were written for long-form prose such as blog posts, emails and articles. A
 
 ## 1. Humanize pass, calibrated on accepted abstracts
 
-`humanize-writing` warns that no single tell proves anything. What reads as AI is a cluster of tells. Running its scanner across all 203 accepted KCDC 2026 abstracts gives real limits to aim for:
+`humanize-writing` warns that no single tell proves anything. What reads as AI is a cluster of tells. Running its scanner across the accepted abstracts of both conferences gives real limits to aim for:
 
-| Signal | Accepted KCDC 2026 | Target for a draft |
-|---|---|---|
-| Flagged vocabulary (robust, leverage, enhance, landscape…) | 79% have **zero**; most common hits: *robust* ×10, *leverage* ×10 | **0**. A plainer word almost always exists |
-| Boilerplate phrases ("it's important to note", "in today's fast-paced"…) | **none** in any abstract | **0** |
-| Em dashes per 100 words | median 0, p90 1.3 | ≤ 1.5 |
-| Burstiness (sentence-length stdev ÷ mean) | p25 0.31, **median 0.43**, p75 0.57 | **≥ 0.35** |
-| "A, B, and C" lists | median 2, p75 3 | **≤ 3**, with list lengths varied |
-| "not just X / isn't just X" | 11% use it; only 2 use it twice | **≤ 1** |
+| Signal | KCDC 2026 (203) | CodeMash 2026 (139) | Target for a draft |
+|---|---|---|---|
+| Flagged vocabulary (robust, leverage, enhance, landscape…) | 79% have **zero**; top: *robust* ×10, *leverage* ×10 | 78% have **zero**; top: *leverage* ×8, *robust* ×7, *landscape* ×6 | **0**. A plainer word almost always exists |
+| Boilerplate phrases ("it's important to note", "in today's fast-paced"…) | **none** | **none** | **0** |
+| Em dashes per 100 words | median 0, p90 1.3 | median 0, p90 1.4 | ≤ 1.5 |
+| Burstiness (sentence-length stdev ÷ mean) | p25 0.31, **median 0.43** | p25 0.26, **median 0.37** | **≥ 0.35** |
+| "A, B, and C" lists | median 2, p75 3 | median 2, p75 3 | **≤ 3**, with list lengths varied |
+| "not just X / isn't just X" | 11% use it; only 2 use it twice | 9% | **≤ 1** |
+
+The two conferences agree closely, which suggests these limits generalize. CodeMash abstracts are more uniform in rhythm (36% below 0.3 burstiness), so varied sentence lengths stand out more there. In CodeMash's AI/ML and Design tracks, flagged vocabulary is most common (0.72 and 0.86 hits per abstract).
 
 Run it:
 ```bash
-python3 tools/check_abstract.py --title "<title>" --against data/kcdc-2026.json draft.txt
+python3 tools/check_abstract.py --title "<title>" --against "data/<conf>-*.json" [--targets LO-HI] draft.txt
 ```
 
 ### Where the humanize rules override the earlier guidance in this skill

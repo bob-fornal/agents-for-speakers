@@ -1,6 +1,6 @@
 # Adding a Conference Skill
 
-Each conference gets its own skill that **extends** `cfp-speaker-abstracts`. Budget ~30 minutes.
+Each conference gets its own skill that **extends** `cfp-speaker-abstracts`. Budget ~30 minutes. Name data and reference files by **conference and year**; see [data-conventions.md](data-conventions.md).
 
 ## 1. Get the accepted sessions
 
@@ -10,7 +10,15 @@ Each conference gets its own skill that **extends** `cfp-speaker-abstracts`. Bud
 python3 tools/fetch_sessionize.py https://<conference>/sessions data/<conf>-<year>.json
 ```
 
-**If not:** export titles/abstracts by other means into the same JSON shape — a list of `{title, abstract, speakers, format, track}` — and the analyzer will work unchanged.
+**If it's a Zoho Backstage site** (`events.<domain>/<EventName>`, Zoho CDN assets; CodeMash uses one):
+
+```bash
+python3 tools/fetch_zoho_backstage.py https://events.<domain>/<EventName> data/<conf>-<year>.json --exclude-tracks "<non-talk tracks>"
+```
+
+Run it once without `--exclude-tracks` to see every track, then exclude meals, sponsors, kids' programs and the like. Format comes from session length, so check the format counts against the conference's published formats.
+
+**Neither:** open the agenda in a browser, watch its network requests for the JSON it loads, and write a small fetcher. Or export titles/abstracts by other means into the same JSON shape — a list of `{title, abstract, speakers, format, track}` — and the analyzer will work unchanged.
 
 Prefer **last year's accepted sessions** for the conference you're targeting. Two years is better than one.
 
@@ -32,7 +40,7 @@ Then ask Claude to read every title plus the first/last sentence of each abstrac
 cp -r templates/conference-skill .claude/skills/cfp-<conf>
 ```
 
-Fill in `SKILL.md` and create the three references, mirroring `cfp-kcdc`:
+Fill in `SKILL.md` and create the references, mirroring `cfp-kcdc` or `cfp-codemash`:
 
 | File | Contents |
 |---|---|
@@ -50,4 +58,4 @@ The conference skill should hold **overrides and additions** — numbers, tracks
 
 ## 6. Refresh yearly
 
-When the new schedule is published, re-fetch, re-run, and update the profile. Note big shifts (a new track, a topic surge) at the top of the conference `SKILL.md`.
+Follow the step-by-step in [data-conventions.md](data-conventions.md#4-refreshing-a-conference-for-a-new-year). In short: fetch the new edition to a **new** `data/<conf>-<year>.json`, write that year's profile and track-scores files beside the old ones, update the trends file, and move the conference `SKILL.md` numbers to the new year. Note big shifts (a new track, a topic surge) at the top of the conference `SKILL.md`.

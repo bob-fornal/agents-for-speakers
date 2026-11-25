@@ -1,6 +1,6 @@
 # Phrase Bank
 
-Recurring phrases from accepted abstracts, grouped by job. Frequencies are from KCDC 2026 (203 sessions). These are **connective tissue** — they make an abstract read as "normal and competent." They never substitute for specifics.
+Recurring phrases from accepted abstracts, grouped by job. Frequencies are from KCDC 2026 (203 sessions) unless marked; **CodeMash 2026 (139)** figures are added where the two conferences differ noticeably. These are **connective tissue** — they make an abstract read as "normal and competent." They never substitute for specifics.
 
 Rule of thumb: use **at most one stock phrase per move**, and surround it with concrete nouns.
 
@@ -14,7 +14,7 @@ Rule of thumb: use **at most one stock phrase per move**, and surround it with c
 | "But what if…" | Turn toward the alternative |
 | "the gap between <A> and <B>" | Names the problem space |
 | "Let's face it." | Casual, candid opener (use once, ever) |
-| "Have you ever…?" | Relatable pain; better as sentence 2 than sentence 1 |
+| "Have you ever…?" / "Ever wonder…?" | Relatable pain. KCDC: better as sentence 2. CodeMash: 20% of abstracts open with a question, and "Ever" is its third most common first word |
 
 ## Session content (Move 2)
 | Phrase | Frequency |
@@ -23,24 +23,26 @@ Rule of thumb: use **at most one stock phrase per move**, and surround it with c
 | "we'll walk through" / "walk through how" | common |
 | "we'll look at" / "look at how" | common |
 | "we'll explore (how)" | common |
-| "learn how to" | 24 |
+| "learn how to" | 24 (CodeMash: 24 of 139; "learn" anywhere 49% vs 35% at KCDC) |
 | "along the way" | 16 |
 | "real-world examples / use cases" | ≈19% "real-world" |
 | "live demo(s)" | ≈18% mention demos |
-| "hands-on" | ≈10% (mostly workshops) |
+| "hands-on" | ≈10% (mostly workshops); CodeMash 15% |
+| "you'll learn / you will learn" | KCDC 17%; **CodeMash 28%** (CodeMash expects explicit learning outcomes) |
 | "I'll show you" | first-person talks |
 
 ## Payoff (Move 3)
 | Phrase | Frequency |
 |---|---|
-| "By the end (of this session/talk/workshop)" | 29 |
+| "By the end (of this session/talk/workshop)" | 29 (14%); CodeMash 8% |
 | "leave with a…" / "you'll leave with" / "attendees will leave with" | 25+ |
 | "walk away with" | 12 |
 | "a (clear / practical) mental model for" | 16 |
 | "practical" (anywhere) | 31% of abstracts |
 | "you can apply immediately / right away" | common |
 | "concrete <strategies / patterns / steps>" | common |
-| "Whether you're <A> or <B>, …" | 12% |
+| "Whether you're <A> or <B>, …" | 12%; **CodeMash 19%** |
+| "Learning outcomes:" + bullets | a CodeMash habit (19% of abstracts have bullets at both) |
 | "This session is for…" / "If you've ever…, this talk is for you." | audience callout |
 
 ## Credibility markers (use only if true)

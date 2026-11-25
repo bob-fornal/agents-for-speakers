@@ -1,12 +1,23 @@
 #!/usr/bin/env python3
 """Print wording/phrasing/structure statistics for a sessions JSON file.
 
-Usage: python3 tools/analyze_sessions.py data/kcdc-2026.json
-Input is the output of fetch_sessionize.py. Re-run per conference/year and
-compare against the numbers recorded in that conference skill's references.
+Usage:
+    python3 tools/analyze_sessions.py data/kcdc-2026.json
+    python3 tools/analyze_sessions.py "data/kcdc-*.json" --year 2027
+
+Input is the output of a fetch_* tool (one path, a glob, or a comma list).
+Profiles are per conference-year: analyze one year at a time (use --year when
+the input spans several) and record the numbers in that year's profile file.
 """
-import json, re, sys, statistics as st, collections as C
-d = json.load(open(sys.argv[1]))
+import argparse, json, pathlib, re, sys, statistics as st, collections as C
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from sessions_io import load, summary, years  # noqa: E402
+_ap = argparse.ArgumentParser(); _ap.add_argument("data"); _ap.add_argument("--year", type=int)
+_a = _ap.parse_args()
+d = load(_a.data, year=_a.year)
+if len(years(d)) > 1:
+    print(f"NOTE: input spans several years ({summary(d)}); stats below mix them. Use --year for a profile.")
+print(f"DATA: {summary(d)}")
 T = [x['title'] for x in d]; A = [x['abstract'] for x in d]
 def wc(s): return len(re.findall(r"[\w'’.-]+", s))
 tl = [wc(t) for t in T]; tc=[len(t) for t in T]

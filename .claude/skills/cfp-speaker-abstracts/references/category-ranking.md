@@ -74,8 +74,10 @@ Recommend #1 as the primary track and #2 as the fallback (in the CFP's alternate
 Manual scoring explains a draft. The automated benchmark compares it, using the same 11 categories applied by `tools/score_sessions.py` to both the draft and every accepted session.
 
 ```bash
-python3 tools/score_sessions.py draft data/<conf>-<year>.json --track "<target track>" --title "<title>" draft.txt [more drafts…]
+python3 tools/score_sessions.py draft "data/<conf>-*.json" [--year YYYY] --track "<target track>" --title "<title>" draft.txt [more drafts…]
 ```
+
+Benchmarks use **one conference-year**: `--year`, or the latest year in the data by default. The output's first line names the year; quote it in the deliverable ("Human Skills, KCDC 2026"). For a talk going to several conferences, run the benchmark once per conference.
 
 It outputs, per category, the draft's automated strength next to the **target track's accepted average** and the all-sessions average, the weighted total with **Δ vs. track average**, and the four tracks whose vocabulary the draft is closest to.
 
@@ -85,7 +87,7 @@ Add to the deliverable:
 3. **Vocabulary check for Ranking B:** if the target track isn't among the draft's top 4 closest tracks, cap its Fit at 3 unless the text is rewritten in that track's language.
 4. Where the draft is below the track average in a weight-4 or weight-5 category, make that category the **Next fix** if it's close to the largest gap.
 
-Conference benchmarks: `cfp-kcdc/references/kcdc-2026-track-scores.md`.
+Conference benchmarks (latest years): `cfp-kcdc/references/kcdc-2026-track-scores.md` · `cfp-codemash/references/codemash-2026-track-scores.md`. Totals compare within one conference only: Specificity and Track fit are graded against each conference-year's own sessions.
 
 ---
 

@@ -9,7 +9,7 @@ You are a CFP coach targeting **KCDC**, a large, practitioner-heavy developer co
 
 **Always load `cfp-speaker-abstracts` first** (`.claude/skills/cfp-speaker-abstracts/SKILL.md`) and follow its 5-step workflow. Where the numbers below differ from its defaults, **these win.**
 
-Data basis: all 203 accepted KCDC 2026 sessions (Sept 9–11, 2026). Full stats: [references/kcdc-2026-profile.md](references/kcdc-2026-profile.md).
+Data basis: all 203 accepted KCDC 2026 sessions (Sept 9–11, 2026), the latest year on file. Full stats: [references/kcdc-2026-profile.md](references/kcdc-2026-profile.md). When a new year is added, follow `docs/data-conventions.md`: new `kcdc-<year>-*.md` files beside the old ones, this file's numbers moved to the latest year, and a `kcdc-trends.md`.
 
 ## 1. KCDC at a glance (2026)
 
@@ -108,7 +108,7 @@ Openness is only one input. A low-openness track can still be the right primary 
 - [ ] Workshop: prerequisites + what participants build + what's provided
 - [ ] Not near-duplicate of the user's other KCDC submissions
 - [ ] Not a clone of a 2026 accepted title, and the checker is clean or every LOOK has been reviewed:
-      `python3 tools/check_abstract.py --title "<title>" --against data/kcdc-2026.json draft.txt`
+      `python3 tools/check_abstract.py --title "<title>" --against "data/kcdc-*.json" draft.txt`
       (thresholds are calibrated on these 203 abstracts: 0 flagged AI words, burstiness ≥ 0.35, ≤ 1.5 em dashes/100 words)
 - [ ] Written in the speaker's voice (for Bob: `write-like-bob`, CFP-adapted). KCDC's candid, playful practitioner tone suits a first-person voice
 

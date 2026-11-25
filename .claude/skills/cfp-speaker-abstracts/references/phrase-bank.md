@@ -1,6 +1,6 @@
 # Phrase Bank
 
-Recurring phrases from accepted abstracts, grouped by job. Frequencies are from KCDC 2026 (203 sessions) unless marked; **CodeMash 2026 (139)** and **Stir Trek 2026 (55)** figures are added where they differ noticeably. Stir Trek uses "this session/talk" most (89%) and "you'll learn" in 33%. These are **connective tissue** — they make an abstract read as "normal and competent." They never substitute for specifics.
+Recurring phrases from accepted abstracts, grouped by job. Frequencies are from KCDC 2026 (203 sessions) unless marked; **CodeMash 2026 (139)**, **Stir Trek 2026 (55)** and **Momentum 2026 (36)** figures are added where they differ noticeably. Momentum is the outlier: "practical" in 53%, first person in 42%, and the least course-style wording ("this session" 67%, "you'll learn" 14%). Stir Trek uses "this session/talk" most (89%) and "you'll learn" in 33%. These are **connective tissue** — they make an abstract read as "normal and competent." They never substitute for specifics.
 
 Rule of thumb: use **at most one stock phrase per move**, and surround it with concrete nouns.
 

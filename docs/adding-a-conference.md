@@ -18,6 +18,14 @@ python3 tools/fetch_zoho_backstage.py https://events.<domain>/<EventName> data/<
 
 Run it once without `--exclude-tracks` to see every track, then exclude meals, sponsors, kids' programs and the like. Format comes from session length, so check the format counts against the conference's published formats.
 
+**A Gatsby site built from Sessionize** (page source mentions Gatsby; `/page-data/<page>/page-data.json` exists), like Momentum Dev Con:
+
+```bash
+python3 tools/fetch_gatsby_sessionize.py https://<site>/sessions data/<conf>-<year>.json [--topic-map tools/maps/<conf>-topic-families.json] [--exclude-formats "Sponsor|Keynote"]
+```
+
+If the CFP uses multi-select topics instead of tracks, write a topic → family map so per-track benchmarks aren't too thin, and document it as derived.
+
 **A custom static site** (like Stir Trek): see `tools/fetch_stirtrek.py` for a small fetcher that reads a sessions table plus per-speaker pages. Check that the page's year label matches the edition.
 
 **Neither:** open the agenda in a browser, watch its network requests for the JSON it loads, and write a small fetcher. Or export titles/abstracts by other means into the same JSON shape — a list of `{title, abstract, speakers, format, track}` — and the analyzer will work unchanged.

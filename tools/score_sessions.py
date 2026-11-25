@@ -40,7 +40,8 @@ WEIGHTS = {
     "Audience": 2, "Humanize": 2,
 }
 MAX_TOTAL = sum(w * 5 for w in WEIGHTS.values())  # 190
-TARGETS = {"session": (130, 200), "half": (160, 230), "full": (180, 260)}
+TARGETS = {"session": (130, 200), "half": (160, 230), "full": (180, 260),
+           "lightning": (60, 150)}  # lightning: Momentum 2026 (n=6, 64–139 words)
 
 STOP = set("""a an the of and to in for with on your you from is it how what why at by be are as or our we that this into
 when not can do will we'll i i'll my me us they their them these those its it's have has had was were been being but if
@@ -97,7 +98,11 @@ def tokens(text: str) -> list[str]:
 
 def fmt_key(fmt: str) -> str:
     f = fmt.lower()
-    return "full" if "full" in f else "half" if "half" in f else "session"
+    if "full-day" in f or "8 hr" in f:
+        return "full"
+    if "half" in f or "4 hr" in f or "pre-compiler" in f:
+        return "half"
+    return "lightning" if "lightning" in f else "session"
 
 
 class TrackModel:
@@ -286,7 +291,7 @@ def cmd_draft(a) -> None:
         raise SystemExit(f"No track {a.track!r} in {yr}. Tracks that year: " + ", ".join(sorted({r['track'] for r in rows})))
     bench = averages([r for r in rows if r["track"] == a.track])
     overall = averages(rows)
-    fmt = {"session": "Session", "half": "Half-Day", "full": "Full-Day"}[a.format]
+    fmt = {"session": "Session", "half": "Half-Day", "full": "Full-Day", "lightning": "Lightning"}[a.format]
     results = []
     for p in a.drafts:
         text = pathlib.Path(p).read_text(encoding="utf-8").strip()

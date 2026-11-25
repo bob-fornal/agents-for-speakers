@@ -87,7 +87,7 @@ Add to the deliverable:
 3. **Vocabulary check for Ranking B:** if the target track isn't among the draft's top 4 closest tracks, cap its Fit at 3 unless the text is rewritten in that track's language.
 4. Where the draft is below the track average in a weight-4 or weight-5 category, make that category the **Next fix** if it's close to the largest gap.
 
-Conference benchmarks (latest years): `cfp-kcdc/references/kcdc-2026-track-scores.md` · `cfp-codemash/references/codemash-2026-track-scores.md` · `cfp-stirtrek/references/stirtrek-2026-track-scores.md`. Totals compare within one conference only: Specificity and Track fit are graded against each conference-year's own sessions.
+Conference benchmarks (latest years): `cfp-kcdc/references/kcdc-2026-track-scores.md` · `cfp-codemash/references/codemash-2026-track-scores.md` · `cfp-stirtrek/references/stirtrek-2026-track-scores.md` · `cfp-momentum/references/momentum-2026-track-scores.md` (by derived topic family; most families are small). Totals compare within one conference only: Specificity and Track fit are graded against each conference-year's own sessions.
 
 ---
 

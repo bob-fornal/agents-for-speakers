@@ -31,7 +31,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 CHECKER = ROOT / ".claude/skills/humanize-writing/scripts/check_ai_tells.py"
 
 # word targets per format: (low, high)
-TARGETS = {"session": (130, 200), "half": (160, 230), "full": (180, 260)}
+TARGETS = {"session": (130, 200), "half": (160, 230), "full": (180, 260),
+           "lightning": (60, 150)}  # lightning: Momentum 2026 (n=6, 64–139 words)
 
 TRIAD = re.compile(r"\b[\w'’-]+(?: [\w'’-]+){0,3}, [\w'’-]+(?: [\w'’-]+){0,3},? (?:and|or) [\w'’-]+", re.I)
 NOT_JUST = re.compile(r"\b(not just|isn['’]t just|not only|more than just|it['’]s not about)\b", re.I)
@@ -45,7 +46,7 @@ def load_checker():
 
 
 def words(s: str) -> list[str]:
-    return re.findall(r"[a-z0-9'’]+", s.lower())
+    return re.findall(r"[a-z0-9']+", s.lower().replace("’", "'").replace("‘", "'"))
 
 
 def title_clones(title: str, against: str, limit: int = 3) -> list[tuple[float, str]]:

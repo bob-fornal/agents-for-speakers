@@ -1,6 +1,6 @@
 # Title Formulas
 
-Twelve repeatable title shapes, each observed in accepted sessions. Examples are from KCDC 2026, plus CodeMash 2026 **(CM)** and Stir Trek 2026 **(ST)** where marked. Percentages are KCDC's share of 203 titles (CodeMash's in parentheses where it differs); patterns overlap.
+Twelve repeatable title shapes, each observed in accepted sessions. Examples are from KCDC 2026, plus CodeMash 2026 **(CM)**, Stir Trek 2026 **(ST)** and Momentum 2026 **(MO)** where marked. Percentages are KCDC's share of 203 titles (CodeMash's in parentheses where it differs); patterns overlap.
 
 When generating options, **spread across formulas** — reviewers and speakers both pick better when the options are genuinely different, not five variations of one idea.
 
@@ -33,6 +33,7 @@ Signals "you've seen the intro; this is the next level."
 A journey/transformation. Best when X and Y are vivid and contrasting.
 
 - From Vibes to Evidence: Quality Gates for Coding Agents
+- From Architecture to Terraform: Letting AI Do the Boring Parts **(MO)**: 14% of Momentum titles use From X to Y
 - From Spreadsheet to Signed PDF: Building End-to-End Document Workflows
 - From Zero to AI Agent in 60 Minutes – Building, Deploying & Integrating an MCP Server Live
 
@@ -95,6 +96,7 @@ Reads like the talk's thesis. Often no colon needed.
 - The Spec Is the Hard Part
 - Waste Is a Bug: The Hidden Inefficiencies in Modern Software
 - LGTM is not a Strategy **(ST)**
+- Coding Isn't the Bottleneck. Validation Is. **(MO)**: a two-sentence reframe
 - Productivity Theater: When 'Just Use AI' Becomes a Management Strategy **(ST)**: names a phenomenon
 
 ## 10. Pop culture / pun

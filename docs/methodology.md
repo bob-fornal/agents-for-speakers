@@ -29,6 +29,13 @@ Searched without success:
 - **Filtering:** 56 program items → 55 sessions. The one panel ("Will AI change who gets to be a developer?") is excluded as organizer-arranged. Meals, movie trailers and a "Pending" slot have no session link.
 - **Result:** 55 sessions, 48 speakers, 9 categories, one session type in hourly slots.
 
+### Momentum Dev Con 2026
+- **Page:** https://momentumdevcon.com/sessions, a Gatsby site built from Sessionize data. Its `/page-data/sessions/page-data.json` lists static-query hashes; `/page-data/sq/d/<hash>.json` holds the sessions (with descriptions) and the schedule (times, rooms). Sessions are dated **October 15, 2026**. The homepage thanks attendees for "Momentum 2026" and promotes October 14, 2027.
+- **Category groups** arrive as numeric IDs only; they're identified by their values as format (Full 45 / Lightning 5 / Keynote 25 / Sponsor 30 minutes), level (Introductory / Intermediate / Advanced) and topics (21 multi-select).
+- **Track:** derived. It's the first-listed topic, grouped into 8 families by `tools/maps/momentum-topic-families.json`. Speakers choose and order their topics, so the first one doesn't always match the content.
+- **Filtering:** 47 entries → 42 sessions (5 service sessions) → **36 CFP sessions** after excluding the keynote (invited) and 5 sponsor slots (paid).
+- **Result:** 36 sessions (30 full, 6 lightning), 32 speakers. Lightning talks are scored against a provisional 60–150-word target from these 6 samples.
+
 ### CodeMash 2026
 - **Page:** https://events.codemash.org/2026CodeMashConference — a Zoho Backstage site (event `76186000006678002`, portal `811345730`).
 - **Fetched:** 2026-11-24, via the site's public agenda endpoint `/public/site?…&eventId=…&portalId=…`. It's the same JSON the agenda page loads, and needs no sign-in. The endpoint was found by watching the agenda page's network requests.

@@ -4,15 +4,23 @@
 Usage:
     python3 tools/fetch_sessionize.py https://www.kcdc.info/sessions data/kcdc-2026.json
     python3 tools/fetch_sessionize.py m1bpgp6h data/kcdc-2026.json      # Sessionize embed id
+    python3 tools/fetch_sessionize.py <url> data/out.json --conference kcdc --year 2026
 
-Output: JSON list of {id, title, abstract, speakers, format, track, tags}.
+Output: JSON list of {id, title, abstract, speakers, format, track, tags, conference, year}.
+Conference and year come from --conference/--year or the data/<conference>-<year>.json name.
+Refuses to overwrite an existing file unless --force (past years are kept, not replaced).
 Standard library + curl only. Data is written to data/ (git-ignored on purpose).
 """
+import argparse
 import html
 import json
+import pathlib
 import re
 import subprocess
 import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from sessions_io import out_path_identity, stamp  # noqa: E402
 
 
 def get(url: str) -> str:
@@ -59,14 +67,22 @@ def parse(markup: str) -> list[dict]:
 
 
 def main() -> None:
-    if len(sys.argv) != 3:
-        sys.exit(__doc__)
-    embed = resolve_embed_id(sys.argv[1])
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("source", help="schedule page URL or Sessionize embed id")
+    ap.add_argument("out", help="data/<conference>-<year>.json")
+    ap.add_argument("--conference")
+    ap.add_argument("--year", type=int)
+    ap.add_argument("--force", action="store_true", help="overwrite an existing file (same year re-fetch)")
+    a = ap.parse_args()
+    conference, year = out_path_identity(a.out, a.conference, a.year)
+    if pathlib.Path(a.out).exists() and not a.force:
+        sys.exit(f"{a.out} exists. Past years are kept as-is; pass --force only to refresh the same year.")
+    embed = resolve_embed_id(a.source)
     markup = get(f"https://sessionize.com/api/v2/{embed}/view/Sessions?under=True")
-    data = parse(markup)
-    with open(sys.argv[2], "w", encoding="utf-8") as f:
+    data = stamp(parse(markup), conference, year)
+    with open(a.out, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=1, ensure_ascii=False)
-    print(f"{len(data)} sessions -> {sys.argv[2]}")
+    print(f"{len(data)} sessions ({conference} {year}) -> {a.out}")
 
 
 if __name__ == "__main__":

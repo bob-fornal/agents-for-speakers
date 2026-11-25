@@ -9,7 +9,7 @@ You are a CFP coach targeting **<ABBR>**, <one-line description: size, audience,
 
 **Always load `cfp-speaker-abstracts` first** and follow its 5-step workflow. Where the numbers below differ from its defaults, **these win.**
 
-Data basis: <N> accepted <year> sessions. Full stats: [references/<conf>-<year>-profile.md](references/<conf>-<year>-profile.md).
+Data basis: <N> accepted <year> sessions, the latest year on file. Full stats: [references/<conf>-<year>-profile.md](references/<conf>-<year>-profile.md). Data files and reference names follow `docs/data-conventions.md` (`data/<conf>-<year>.json`; one `<conf>-<year>-*.md` set per year; `<conf>-trends.md` once there are two or more years).
 
 ## 1. <ABBR> at a glance (<year>)
 

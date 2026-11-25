@@ -1,12 +1,12 @@
 # Title Formulas
 
-Twelve repeatable title shapes, each observed in accepted sessions (KCDC 2026 examples shown). Percentages are share of the 203 accepted titles that match the pattern; patterns overlap.
+Twelve repeatable title shapes, each observed in accepted sessions. Examples are from KCDC 2026, plus CodeMash 2026 where marked **(CM)**. Percentages are KCDC's share of 203 titles (CodeMash's in parentheses where it differs); patterns overlap.
 
 When generating options, **spread across formulas** — reviewers and speakers both pick better when the options are genuinely different, not five variations of one idea.
 
 ---
 
-## 1. Hook: Clarifier — the workhorse (~51%)
+## 1. Hook: Clarifier — the workhorse (~51%; CM 47%)
 `<3-word memorable hook>: <6-word literal description>`
 
 The hook earns attention; the clarifier earns the click. If either half could be deleted without loss, rework it.
@@ -101,6 +101,9 @@ Movie, game, or idiom twist — **always paired with a literal clarifier** unles
 - The Men in Black Know What's in Your JavaScript and How to Fix it!
 - I Fight for the User: What Tron Taught Me About Building Autonomous AI
 - Putting the D&D in TDD
+- Layers Are for Lasagna: Embracing Vertical Slice Architecture **(CM)**
+- Diet Docker: Crafting lightweight containers with multi-stage builds **(CM)**
+- Do you want to build a copilot? Star Wars edition! **(CM)**: a Pre-Compiler, so the theme sells the experience
 
 Risk: a pun with no topic word makes the reviewer guess. "Trash Talk – Exploring the memory management in the JVM" works; "Trash Talk" alone wouldn't.
 
@@ -121,6 +124,10 @@ Works for release-driven topics, recognized maintainers/experts, and beginner in
 - What's new in Spring Boot 4
 - Deep Dive Into Postgres 18 & 19
 - Home Assistant 101
+- Assembly Language for People Who Don't Want to Learn Assembly Language **(CM)**: plain topic, but the audience twist does the hook's work
+- PKI Unlocked: A No-Math Primer for Builders **(CM)**
+
+At teaching-oriented conferences (CodeMash), plain descriptive titles often carry an audience reassurance instead ("for People Who…", "No-Math", "for Real People"). It's a useful hook when the topic itself is the draw.
 
 ---
 

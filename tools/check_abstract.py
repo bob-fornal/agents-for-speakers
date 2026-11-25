@@ -9,6 +9,8 @@ Usage:
     python3 tools/check_abstract.py --title "My Title" draft.txt
     python3 tools/check_abstract.py --title "My Title" --format half draft.txt
     python3 tools/check_abstract.py --title "My Title" --against data/kcdc-2026.json draft.txt
+    python3 tools/check_abstract.py --title "My Title" --against data/codemash-2026.json --targets 120-190 draft.txt
+    python3 tools/check_abstract.py --title "My Title" --against "data/kcdc-*.json" draft.txt   # clone check, every year
 
 draft.txt holds the abstract only (plain text, blank line between paragraphs).
 Thresholds are calibrated on the 203 accepted KCDC 2026 abstracts; see
@@ -21,6 +23,9 @@ import json
 import pathlib
 import re
 import sys
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from sessions_io import load  # noqa: E402
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 CHECKER = ROOT / ".claude/skills/humanize-writing/scripts/check_ai_tells.py"
@@ -44,12 +49,13 @@ def words(s: str) -> list[str]:
 
 
 def title_clones(title: str, against: str, limit: int = 3) -> list[tuple[float, str]]:
-    accepted = [x["title"] for x in json.load(open(against, encoding="utf-8"))]
+    """Compare against every accepted title in `against` (all years given)."""
+    accepted = [(x["title"], f'{x["conference"]} {x["year"]}') for x in load(against)]
     tw = words(title)
     scored = []
-    for t in accepted:
+    for t, where in accepted:
         r = difflib.SequenceMatcher(None, tw, words(t)).ratio()
-        scored.append((round(r, 2), t))
+        scored.append((round(r, 2), f"{t} ({where})"))
     scored.sort(reverse=True)
     return scored[:limit]
 
@@ -59,7 +65,8 @@ def main() -> None:
     ap.add_argument("draft")
     ap.add_argument("--title", required=True)
     ap.add_argument("--format", choices=TARGETS, default="session")
-    ap.add_argument("--against", help="accepted-sessions JSON from fetch_sessionize.py")
+    ap.add_argument("--against", help='accepted sessions: a file, a glob like "data/kcdc-*.json" (all years), or a comma list')
+    ap.add_argument("--targets", help="override word target as LO-HI (conference skills give these), e.g. 120-190")
     a = ap.parse_args()
 
     text = pathlib.Path(a.draft).read_text(encoding="utf-8").strip()
@@ -83,6 +90,8 @@ def main() -> None:
 
     print("\nABSTRACT:")
     lo, hi = TARGETS[a.format]
+    if a.targets:
+        lo, hi = (int(x) for x in a.targets.split("-"))
     row("words", res["word_count"], lo <= res["word_count"] <= hi, f"target {lo}–{hi} for {a.format}")
     row("paragraphs", res["paragraph_count"], 2 <= res["paragraph_count"] <= 5, "2–5; 3 is most common")
     first = re.split(r"(?<=[.!?])\s+", text)[0]

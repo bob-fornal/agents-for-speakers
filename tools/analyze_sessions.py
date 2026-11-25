@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+"""Print wording/phrasing/structure statistics for a sessions JSON file.
+
+Usage: python3 tools/analyze_sessions.py data/kcdc-2026.json
+Input is the output of fetch_sessionize.py. Re-run per conference/year and
+compare against the numbers recorded in that conference skill's references.
+"""
+import json, re, sys, statistics as st, collections as C
+d = json.load(open(sys.argv[1]))
+T = [x['title'] for x in d]; A = [x['abstract'] for x in d]
+def wc(s): return len(re.findall(r"[\w'’.-]+", s))
+tl = [wc(t) for t in T]; tc=[len(t) for t in T]
+print('TITLE words: mean %.1f median %s min %s max %s; chars median %s' % (st.mean(tl), st.median(tl), min(tl), max(tl), st.median(tc)))
+print('title word hist', sorted(C.Counter(min(x//3*3,21) for x in tl).items()))
+n=len(T)
+def pct(f): return '%d (%.0f%%)' % (sum(1 for t in T if f(t)), 100*sum(1 for t in T if f(t))/n)
+print('colon', pct(lambda t: ':' in t)); print('dash sep', pct(lambda t: re.search(r' [-–—] ', t)))
+print('question', pct(lambda t: '?' in t)); print('exclaim', pct(lambda t: '!' in t))
+print('starts How/What/Why/When', pct(lambda t: re.match(r'(How|What|Why|When|Where|Who)\b', t)))
+print('number', pct(lambda t: re.search(r'\d', t)))
+print('From X to Y', pct(lambda t: re.search(r'\bfrom\b.*\bto\b', t, re.I)))
+print('Beyond', pct(lambda t: re.search(r'\bbeyond\b', t, re.I)))
+print('gerund start', pct(lambda t: re.match(r'\w+ing\b', t)))
+print('imperative-ish start (verb)', pct(lambda t: re.match(r'(Build|Stop|Make|Let|Get|Ship|Learn|Master|Write|Design|Don|Unlock|Turn|Take|Bring|Break|Escape|Tame|Level|Meet|Put|Keep|Use|Go|Run|Fix)\b', t)))
+print('you/your', pct(lambda t: re.search(r'\b(you|your)\b', t, re.I)))
+print('AI/agent mention', pct(lambda t: re.search(r'\b(AI|agent\w*|LLM\w*|MCP|Copilot|GenAI|agentic)\b', t, re.I)))
+print('vs', pct(lambda t: re.search(r'\bvs\.?\b|versus', t, re.I)))
+print('hands-on/workshop in title', pct(lambda t: re.search(r'hands-on|workshop', t, re.I)))
+print('parenthetical', pct(lambda t: '(' in t))
+print('and/& lists', pct(lambda t: re.search(r',.*\band\b|&', t)))
+first = C.Counter(t.split()[0].lower() for t in T); print('first words', first.most_common(25))
+pre = [t.split(':')[0] for t in T if ':' in t]; print('pre-colon words median', st.median([wc(p) for p in pre]))
+post = [t.split(':',1)[1] for t in T if ':' in t]; print('post-colon words median', st.median([wc(p) for p in post]))
+stop=set('a an the of and to in for with on your you from is it how what why at by be are as or our we that this into when not can do'.split())
+words=C.Counter(w for t in T for w in re.findall(r"[a-z][a-z'’-]+", t.lower()) if w not in stop)
+print('title words', words.most_common(60))
+big=C.Counter(' '.join(p) for t in T for p in zip(t.lower().split(), t.lower().split()[1:]))
+print('title bigrams', big.most_common(30))
+print()
+aw=[wc(a) for a in A]; paras=[len([p for p in a.split('\n') if p.strip()]) for a in A]
+print('ABSTRACT words: mean %.0f median %s p25 %s p75 %s min %s max %s' % (st.mean(aw), st.median(aw), sorted(aw)[n//4], sorted(aw)[3*n//4], min(aw), max(aw)))
+print('paragraphs median', st.median(paras), C.Counter(paras).most_common())
+for fmt in set(x['format'] for x in d):
+    s=[wc(x['abstract']) for x in d if x['format']==fmt]; print(fmt, 'median words', st.median(s))
+def ap(f): k=sum(1 for a in A if f(a)); return '%d (%.0f%%)'%(k,100*k/n)
+print('bullets', ap(lambda a: re.search(r'^\s*[-•*●▪]|^\s*\d+[.)]\s', a, re.M)))
+print('"you" in abstract', ap(lambda a: re.search(r'\byou\b', a, re.I)))
+print('"we\'ll/we will"', ap(lambda a: re.search(r"\bwe(’|')ll\b|\bwe will\b", a, re.I)))
+print('"this session/talk"', ap(lambda a: re.search(r'\bthis (session|talk|workshop|presentation)\b', a, re.I)))
+print('"in this session/talk"', ap(lambda a: re.search(r'\bin this (session|talk|workshop|presentation)\b', a, re.I)))
+print('attendees/participants', ap(lambda a: re.search(r'\b(attendees|participants)\b', a, re.I)))
+print('"by the end"', ap(lambda a: re.search(r'by the end', a, re.I)))
+print('"you\'ll leave/walk away"', ap(lambda a: re.search(r'(leave|walk away|come away|take away|takeaway)', a, re.I)))
+print('"you will learn/you\'ll learn"', ap(lambda a: re.search(r"(you(’|')ll|you will) (learn|see|discover|explore|gain)", a, re.I)))
+print('learn', ap(lambda a: re.search(r'\blearn', a, re.I)))
+print('practical', ap(lambda a: re.search(r'\bpractical', a, re.I)))
+print('real-world', ap(lambda a: re.search(r'real[- ]world', a, re.I)))
+print('production', ap(lambda a: re.search(r'\bproduction\b', a, re.I)))
+print('hands-on', ap(lambda a: re.search(r'hands-on', a, re.I)))
+print('live demo/demo', ap(lambda a: re.search(r'\bdemo', a, re.I)))
+print('question opener', ap(lambda a: '?' in re.split(r'(?<=[.?!])\s', a.strip())[0]))
+print('any question', ap(lambda a: '?' in a))
+print('"whether you"', ap(lambda a: re.search(r'whether you', a, re.I)))
+print('audience callout (for developers|ideal for|if you)', ap(lambda a: re.search(r"(this (session|talk) is for|ideal for|perfect for|designed for|if you(’|')?(re| are| have| ever)?)", a, re.I)))
+print('"but"/contrast in first 2 sentences', ap(lambda a: re.search(r'\b(but|however|yet)\b', ' '.join(re.split(r'(?<=[.?!])\s+', a.strip())[:2]), re.I)))
+print('em dash', ap(lambda a: '—' in a or ' - ' in a or '–' in a))
+print('first-person I/my', ap(lambda a: re.search(r"\b(I|I(’|')ve|my|I(’|')ll)\b", a)))
+print('mentions experience/lessons/story', ap(lambda a: re.search(r'(lessons? learned|our (journey|experience|team)|story|war stories)', a, re.I)))
+print('no fluff "not just"/"isn\'t just"/"not about"', ap(lambda a: re.search(r"(not just|isn(’|')t just|not about|isn(’|')t about|more than just)", a, re.I)))
+print('stats/numbers', ap(lambda a: re.search(r'\d+%|\d{2,}', a)))
+fs=C.Counter(re.split(r'(?<=[.?!])\s+',a.strip())[0].split()[0].lower() for a in A); print('abstract first words', fs.most_common(25))
+aw2=C.Counter(w for a in A for w in re.findall(r"[a-z][a-z'’-]+", a.lower()) if w not in stop and len(w)>3)
+print('abstract words', aw2.most_common(90))
+tri=C.Counter()
+for a in A:
+    ws=re.findall(r"[a-z'’]+", a.lower())
+    for i in range(len(ws)-2): tri[' '.join(ws[i:i+3])]+=1
+print('abstract trigrams', [x for x in tri.most_common(120)])

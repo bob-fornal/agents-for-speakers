@@ -1,0 +1,5 @@
+# Scraped conference data is copyrighted speaker content — regenerate locally, don't commit.
+data/*.json
+data/*.html
+__pycache__/
+.DS_Store

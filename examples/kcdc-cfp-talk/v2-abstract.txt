@@ -1,0 +1,9 @@
+Recently, I decided to stop guessing at conference abstracts.
+
+So, I pulled all 203 sessions KCDC accepted in 2026 and had an AI agent take them apart. Title lengths. Colons. First lines and last lines. Which tracks were packed with AI talks, and which barely had any. The patterns were almost boring ... half the titles share one shape, and a third of the abstracts end by telling you exactly what you'll walk away with. (A few weak habits got accepted anyway. I'll show those too.)
+
+In this session, we'll walk through what the accepted talks have in common and what accepted-only data can't tell you. Then, we'll turn those findings into Claude Code skills, one for any conference and one tuned to KCDC, and use them live to take a rough talk idea to a submission-ready title and abstract.
+
+You'll leave with an abstract blueprint, a review rubric, and a checker you can point at any Sessionize-powered conference before its next CFP.
+
+No more guessing.

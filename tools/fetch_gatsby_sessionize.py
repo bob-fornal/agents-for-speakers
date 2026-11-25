@@ -8,7 +8,7 @@ Usage:
 
 How it works: Gatsby publishes /page-data/<page>/page-data.json, which lists "static
 query" hashes; each /page-data/sq/d/<hash>.json holds GraphQL results. The fetcher finds
-the one with allSessionizeSessionGroup sessions that carry descriptions, and joins the
+the one whose sessions (allSessionizeSessionGroup, or allSessions on older builds) carry descriptions, and joins the
 schedule query (times, rooms) when present.
 
 Sessionize category groups arrive as numeric IDs only, so they are recognized by their
@@ -45,10 +45,14 @@ def page_data_url(page_url: str) -> str:
 
 
 def sessions_in(data: dict) -> list[dict]:
-    try:
-        return data["data"]["allSessionizeSessionGroup"]["nodes"][0]["sessions"]
-    except (KeyError, IndexError, TypeError):
-        return []
+    """Sessions from a static query. Newer builds use allSessionizeSessionGroup;
+    older ones (e.g. Momentum 2025) use allSessions."""
+    for key in ("allSessionizeSessionGroup", "allSessions"):
+        try:
+            return data["data"][key]["nodes"][0]["sessions"]
+        except (KeyError, IndexError, TypeError):
+            continue
+    return []
 
 
 def classify_groups(sessions: list[dict]) -> dict[str, int]:
@@ -105,7 +109,8 @@ def main() -> None:
     exclude = re.compile(a.exclude_formats, re.I) if a.exclude_formats else None
     out, unmapped = [], set()
     for s in full:
-        if s.get("isServiceSession") or not (s.get("description") or "").strip():
+        # Service sessions (meals, opening) have no speakers; older builds lack isServiceSession.
+        if s.get("isServiceSession") or not s.get("speakers") or not (s.get("description") or "").strip():
             continue
         fmt = (items(s, roles.get("format")) or ["Session"])[0]
         if exclude and exclude.search(fmt):

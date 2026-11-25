@@ -5,6 +5,10 @@ into the same JSON shape as the other fetchers.
 Usage:
     python3 tools/fetch_stirtrek.py https://stirtrek.com/sessions/ data/stirtrek-2026.json
 
+    # A past year: sessions list from the Wayback Machine, speaker pages from the live site
+    python3 tools/fetch_stirtrek.py "https://web.archive.org/web/20251016034727id_/https://stirtrek.com/sessions/" \
+        data/stirtrek-2025.json --base-url https://stirtrek.com/
+
 The sessions page lists title, speaker(s) and category; each abstract lives on the
 speaker's page (/speakers/<path-year>/<Name>.html#abstract). Panels ("Panel: …") are
 flagged and dropped unless --include-panels: they're organizer-arranged, not CFP picks.
@@ -62,6 +66,8 @@ def main() -> None:
     ap.add_argument("--conference")
     ap.add_argument("--year", type=int)
     ap.add_argument("--include-panels", action="store_true")
+    ap.add_argument("--base-url", help="resolve speaker pages against this site instead of page_url "
+                    "(use when page_url is an archived copy, e.g. web.archive.org/web/<ts>id_/…)")
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()
     conference, year = out_path_identity(a.out, a.conference, a.year)
@@ -90,10 +96,20 @@ def main() -> None:
         abstract = ""
         for path in candidates:
             if path not in cache:
-                cache[path] = speaker_abstracts(get(urllib.parse.urljoin(a.page_url, path)))
+                cache[path] = speaker_abstracts(get(urllib.parse.urljoin(a.base_url or a.page_url, path)))
             abstract = cache[path].get(norm(r["title"]), "")
             if abstract:
                 break
+        archived = re.match(r"(https?://web\.archive\.org/web/\d+id_/)", a.page_url)
+        if not abstract and archived and a.base_url:
+            # Live speaker page may now show a newer talk; fall back to the same snapshot.
+            for path in candidates:
+                key = "archive:" + path
+                if key not in cache:
+                    cache[key] = speaker_abstracts(get(archived.group(1) + urllib.parse.urljoin(a.base_url, path)))
+                abstract = cache[key].get(norm(r["title"]), "")
+                if abstract:
+                    break
         if not abstract:
             missing.append(r["title"])
             continue

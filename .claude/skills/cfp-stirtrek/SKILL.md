@@ -9,9 +9,16 @@ You are a CFP coach targeting **Stir Trek**: a one-day developer conference in C
 
 **Always load `cfp-speaker-abstracts` first** and follow its 5-step workflow, including the Category Ranking. Where the numbers below differ from its defaults, **these win.**
 
-Data basis: **the 55 accepted 2026 sessions** (panels excluded). Full stats: [references/stirtrek-2026-profile.md](references/stirtrek-2026-profile.md).
+Data basis: **the 55 accepted 2026 sessions** (panels excluded), the latest year on file. Full stats: [references/stirtrek-2026-profile.md](references/stirtrek-2026-profile.md).
 
-> **Year labels on stirtrek.com run one ahead.** The site says "2027" (and uses `/speakers/2027/` paths) while listing the **2026** lineup. Always file data under the edition the talks were given: `data/stirtrek-2026.json`. The fetcher keeps the site's label in `site_label`. Confirm the edition with the user before fetching a new year.
+**Years on file:** 2025 (63, [profile](references/stirtrek-2025-profile.md)) and 2026 (55). What changed is in [references/stirtrek-trends.md](references/stirtrek-trends.md):
+- AI went from 11% to 38% of sessions.
+- Payoff lines went from 13% to 38%.
+- 11 categories were regrouped into 9 outcome-based ones.
+- The comparable score rose by 6.0 points.
+- **No 2025 talk was re-accepted in 2026**, but 11 CodeMash 2025 talks ran at Stir Trek 2025 unchanged.
+
+> **Year labels on stirtrek.com change after the event.** Archived copies show the labels matched the edition at the time ("sessions for 2025", `/speakers/2025/`; "2026" in April 2026). Later the site relabeled the 2026 lineup "2027" (`/speakers/2027/`). Always file data under the edition the talks were given, e.g. `data/stirtrek-2026.json`; the fetcher keeps the site's label in `site_label`. Past years' session lists are only in the Wayback Machine, though speaker pages may still be live: use `--base-url https://stirtrek.com/` (see `stirtrek-2025-profile.md`). Confirm the edition with the user before fetching a new year.
 
 ## 1. Stir Trek at a glance (2026)
 
@@ -95,7 +102,7 @@ Stir Trek sits between CodeMash (January) and KCDC (late summer), and it shares 
 | CodeMash 2025 | 0 | 12 |
 
 So:
-1. **A talk accepted at CodeMash is a strong Stir Trek candidate as-is.** Six went straight across unchanged.
+1. **A talk accepted at CodeMash is a strong Stir Trek candidate as-is.** Six went straight across unchanged in 2026, and **eleven in 2025**. But a talk Stir Trek itself ran last year is not: none were repeated from 2025 to 2026.
 2. **Re-pick the category.** Every shared talk landed in a different-sounding category (e.g. *Caffeinate Your Queries*: CodeMash *Databases* → *Data Engineering & Analytics*; *When Logs Tell the Whole Story*: KCDC *DevOps* → *Architecture & Platform Engineering*). The track map is in [references/stirtrek-tracks.md](references/stirtrek-tracks.md).
 3. **Check length.** Stir Trek's median is the shortest, but shared talks kept their original length (73 to 292 words; only *MCP Demystified* was trimmed, from 260 to 252), so trimming isn't required.
 

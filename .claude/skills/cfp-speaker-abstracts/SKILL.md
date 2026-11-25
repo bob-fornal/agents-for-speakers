@@ -7,7 +7,7 @@ description: Write, rewrite, or review conference talk titles and abstracts (CFP
 
 You are a CFP coach for technical conference speakers. Your job is to turn a talk idea into a title and abstract that a tired program-committee reviewer, scanning hundreds of submissions, will mark "yes."
 
-These rules are conference-agnostic. They're grounded in **433 accepted 2026 sessions from four Midwest conferences**: KCDC (203), CodeMash (139), Stir Trek (55) and Momentum Dev Con (36). Earlier years add 349 more for trends (782 in all). Where the conferences differ, the ranges below cover them. A conference-specific skill **extends** these rules: when it gives a number (word count, track mix, tone), its number wins.
+These rules are conference-agnostic. They're grounded in **433 accepted 2026 sessions from four Midwest conferences**: KCDC (203), CodeMash (139), Stir Trek (55) and Momentum Dev Con (36). Earlier years add 447 more for trends (880 in all). Where the conferences differ, the ranges below cover them. A conference-specific skill **extends** these rules: when it gives a number (word count, track mix, tone), its number wins.
 
 ### Conference skills and data years
 
@@ -15,20 +15,29 @@ These rules are conference-agnostic. They're grounded in **433 accepted 2026 ses
 |---|---|---|---|
 | KCDC | `cfp-kcdc` | **2026**: 203 sessions · also 2024: 200 (2025 unrecoverable) | Sessionize · `fetch_sessionize.py` |
 | CodeMash | `cfp-codemash` | **2026**: 139 sessions · also 2025: 149 | Zoho Backstage · `fetch_zoho_backstage.py` |
-| Stir Trek | `cfp-stirtrek` | **2026**: 55 sessions (the site labels it "2027") | Static site · `fetch_stirtrek.py` |
-| Momentum Dev Con | `cfp-momentum` | **2026**: 36 sessions (30 full + 6 lightning) | Gatsby + Sessionize · `fetch_gatsby_sessionize.py` |
+| Stir Trek | `cfp-stirtrek` | **2026**: 55 sessions (the site now labels it "2027") · also 2025: 63 | Static site (+ Wayback for past years) · `fetch_stirtrek.py` |
+| Momentum Dev Con | `cfp-momentum` | **2026**: 36 sessions (30 full + 6 lightning) · also 2025: 35 | Gatsby + Sessionize (`<year>.momentumdevcon.com` for past years) · `fetch_gatsby_sessionize.py` |
 | Anything else | this skill only | — | add one: `docs/adding-a-conference.md` |
 
-**What changed across years (KCDC and CodeMash, the two with more than one year on file):**
-- **AI roughly tripled:** KCDC 12% → 44% (2024 → 2026), CodeMash 10% → 29% (2025 → 2026).
-- **Explicit payoff lines became the norm:** KCDC 10% → 34%, CodeMash 17% → 37%.
-- **The "AI accent" faded:** abstracts with zero flagged words went from 71% to 79% (KCDC) and 62% to 78% (CodeMash); *delve* nearly vanished.
-- **KCDC's bar rose** (+12.5 comparable points, abstracts +36 words); **CodeMash's held steady** (+2.8).
-- **Repeats:** CodeMash re-accepted 6 prior-year talks, 5 unchanged; KCDC re-accepted none across two editions.
+**What changed across years (all four conferences now have two years on file):**
+
+| | KCDC 2024 → 2026 | CodeMash 2025 → 2026 | Stir Trek 2025 → 2026 | Momentum 2025 → 2026 |
+|---|---|---|---|---|
+| Sessions involving AI | 12% → 44% | 10% → 29% | 11% → 38% | 25% → 53% |
+| Leave / walk away payoff | 10% → 34% | 17% → 37% | 13% → 38% | 34% → 39% |
+| Zero flagged AI words | 71% → 79% | 62% → 78% | 73% → 82% | 66% → 94% |
+| Comparable score (/150) | 71.0 → 83.5 | 75.9 → 78.7 | 73.5 → 79.5 | 80.3 → 86.0 |
+| Prior-year talks re-accepted | 0 | **6** (5 unchanged) | 0 | 0 |
+
+- **AI roughly doubled to tripled everywhere,** and every conference now has a dedicated AI track or topic group.
+- **Explicit payoff lines became the norm** (about a third or more of accepted abstracts).
+- **The "AI accent" faded everywhere;** *delve* nearly vanished.
+- **The bar rose at all four,** most at KCDC (+12.5 over two editions), least at CodeMash (+2.8).
+- **Repeats:** only CodeMash re-accepts its own prior-year talks. But talks move freely *between* conferences (see §6).
 
 Write to the latest year's bar. Details are in each conference's `*-trends.md`.
 
-**Every number belongs to a conference-year**, meaning the edition the talks were given, even when a site labels it differently (Stir Trek's site runs a year ahead). When you cite a statistic, say which (for example, "KCDC 2026: 51% use a colon"). As more years are added, conference skills give the **latest** year's numbers and track earlier years in a trends file. Benchmarks use one year; clone checks use all years. See `docs/data-conventions.md`.
+**Every number belongs to a conference-year**, meaning the edition the talks were given, even when a site labels it differently (Stir Trek's site relabels its lineup with the next year after the event). When you cite a statistic, say which (for example, "KCDC 2026: 51% use a colon"). As more years are added, conference skills give the **latest** year's numbers and track earlier years in a trends file. Benchmarks use one year; clone checks use all years. See `docs/data-conventions.md`.
 
 ## 1. What reviewers actually decide on
 
@@ -166,7 +175,7 @@ At conferences that allow it, submit **2–4 distinct abstracts** across differe
 
 ## 6. One talk, several conferences or years
 
-Reusing a talk is normal, and the Midwest runs as a circuit: **CodeMash (January) → Stir Trek (spring) → KCDC (late summer) → Momentum (October)**. In 2026:
+Reusing a talk is normal, and the Midwest runs as a circuit: **CodeMash (January) → Stir Trek (spring) → KCDC (late summer) → Momentum (October)**. In 2025, Stir Trek ran **11** CodeMash talks unchanged, and Momentum shared 4 with Stir Trek and 6 titles with CodeMash. In 2026:
 
 | Pair | Shared talks | Identical abstracts | Shared speakers |
 |---|---|---|---|
@@ -185,7 +194,7 @@ Adapt deliberately:
 2. **Length: trimming is optional.** Targets differ (Stir Trek 100–180, CodeMash 120–190, KCDC 130–200, Momentum 150–230), but accepted repeats nearly always kept identical text at any length, from 73 to 292 words. Resize only when you're far outside a conference's range, or when a new year's bar has moved (see the trends files).
 3. **Re-tune the register only if it helps** (table above): learning outcomes for CodeMash, production evidence for KCDC, personal stakes for Stir Trek, first-person evidence for Momentum. Proven abstracts were accepted unchanged, so don't rewrite a strong one just to match a style.
 4. **Benchmark against each conference separately.** Run `score_sessions.py draft` with each conference's data; track vocabularies differ. Example: the KCDC worked example's v4 scores +40.0 in Momentum's Career & Leadership (its #1 closest family) and +28.0 in Stir Trek's Professional Growth & Leadership, though the Stir Trek category isn't among its closest by vocabulary. It is #1 for Human Skills at KCDC (+43.3) and #1 for Career Development at CodeMash (+39.2), but it's 9 words over CodeMash's target.
-5. **Resubmitting next year:** clone-check against every past year (`--against "data/<conf>-*.json"`). Conferences differ here. CodeMash re-accepted 5 talks word-for-word from 2025 to 2026, while KCDC re-accepted none from 2024 to 2026 (returning speakers brought new talks). Check the conference's trends file. Either way, refresh the evidence (new numbers, what changed since) and add a payoff line if the old abstract lacked one.
+5. **Resubmitting next year:** clone-check against every past year (`--against "data/<conf>-*.json"`). Conferences differ here. CodeMash re-accepted 5 talks word-for-word from 2025 to 2026; KCDC, Stir Trek and Momentum re-accepted **none** (returning speakers brought new talks). A talk can travel to *other* conferences unchanged, but don't count on the same conference taking it twice, except CodeMash. Check the conference's trends file. Either way, refresh the evidence (new numbers, what changed since) and add a payoff line if the old abstract lacked one.
 
 ## 7. Honesty guardrails
 

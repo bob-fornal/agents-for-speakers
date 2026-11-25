@@ -11,7 +11,17 @@ You are a CFP coach targeting **Momentum Dev Con**, a one-day developer conferen
 
 Data basis: **the 36 accepted 2026 sessions** (October 15, 2026), meaning the 30 full talks and 6 lightning talks. The keynote (invited) and 5 sponsor slots (paid) are excluded. Full stats: [references/momentum-2026-profile.md](references/momentum-2026-profile.md).
 
-> The site already promotes **2027** (October 14, 2027) while still serving the 2026 sessions. File data by the edition the talks were given, and confirm the edition with the user before fetching a new year.
+**Years on file:** 2025 (35, [profile](references/momentum-2025-profile.md); from the live 2025.momentumdevcon.com archive site) and 2026 (36). What changed is in [references/momentum-trends.md](references/momentum-trends.md):
+- AI went from 25% to 53% of sessions.
+- First-person writing went from 20% to 42%, and numbers from 11% to 31%.
+- "You'll learn" dropped from 26% to 14%.
+- Flagged-word-free abstracts went from 66% to 94%.
+- The comparable score rose by 5.7 points.
+- No 2025 talk was re-accepted. AI sessions took slots from Architecture (12 → 4).
+
+Write to the 2026 register.
+
+> The site already promotes **2027** (October 14, 2027) while still serving the 2026 sessions. Past years live on their own sites (`https://<year>.momentumdevcon.com`, linked under "Prior Years"), so the same fetcher works on them. File data by the edition the talks were given, and confirm the edition with the user before fetching a new year.
 
 ## 1. Momentum at a glance (2026)
 

@@ -2,11 +2,12 @@
 
 Claude Code skills that help you write conference talk **titles and abstracts** that look like the ones that get accepted. They're built from an analysis of real accepted sessions, write in the speaker's own voice, and score every draft against the track it's aimed at.
 
-Two conferences are covered so far, with two editions each:
+Three Midwest conferences are covered so far:
 - **KCDC:** 2026 (203 sessions) and 2024 (200). The 2025 schedule couldn't be recovered.
 - **CodeMash:** 2026 (139 developer sessions) and 2025 (149).
+- **Stir Trek:** 2026 (55 sessions). Its site labels this lineup "2027".
 
-That's 691 accepted sessions in all, plus year-over-year trends. The fetch tools work on any conference whose schedule is published through **Sessionize** or **Zoho Backstage**.
+That's 746 accepted sessions in all, plus year-over-year trends and cross-conference comparisons. The fetch tools cover **Sessionize**, **Zoho Backstage**, and Stir Trek's static site.
 
 ---
 
@@ -19,6 +20,7 @@ That's 691 accepted sessions in all, plus year-over-year trends. The fetch tools
 - [Tools](#tools)
 - [Findings: KCDC 2026](#findings-kcdc-2026)
 - [Findings: CodeMash 2026](#findings-codemash-2026)
+- [Findings: Stir Trek 2026](#findings-stir-trek-2026)
 - [Trends across years](#trends-across-years)
 - [Worked example](#worked-example)
 - [Adding another conference](#adding-another-conference)
@@ -47,6 +49,10 @@ python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2025CodeMashCo
 ```
 
 ```bash
+python3 tools/fetch_stirtrek.py https://stirtrek.com/sessions/ data/stirtrek-2026.json
+```
+
+```bash
 python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2026CodeMashConference data/codemash-2026.json --exclude-regex "^(Makerspace|KidzMash|Sponsors|Meals|CodeMash On-Air)"
 ```
 
@@ -64,6 +70,7 @@ Or invoke a skill directly:
 |---|---|
 | `/cfp-kcdc` | Anything aimed at KCDC (loads the base skill too) |
 | `/cfp-codemash` | Anything aimed at CodeMash, including 4-hour Pre-Compilers (loads the base skill too) |
+| `/cfp-stirtrek` | Anything aimed at Stir Trek (loads the base skill too) |
 | `/cfp-speaker-abstracts` | Any other conference, a conference-agnostic draft, or one talk adapted for several conferences |
 
 **3. Check a draft yourself** at any time (conference skills give the word targets):
@@ -103,8 +110,8 @@ The skills never invent numbers or experience for you. Missing evidence becomes 
 
 ```
 cfp-kcdc ──────┐
-               ├─► extends ──► cfp-speaker-abstracts ──► uses ──► humanize-writing
-cfp-codemash ──┘               (workflow, formulas,              (AI-tell checklist + scanner)
+cfp-codemash ──┼─► extends ──► cfp-speaker-abstracts ──► uses ──► humanize-writing
+cfp-stirtrek ──┘               (workflow, formulas,              (AI-tell checklist + scanner)
  (per-conference numbers,       blueprint, rubric,
   tracks, openness,             category ranking)       ──► uses ──► write-like-bob
   benchmarks)                                                        (speaker voice, CFP-adapted)
@@ -115,6 +122,7 @@ cfp-codemash ──┘               (workflow, formulas,              (AI-tell 
 | **`cfp-speaker-abstracts`** | The base. Owns the workflow and the general rules: 12 title formulas, the Hook → Inside → Payoff blueprint, a phrase bank, anti-patterns, a 10-criterion rubric, the Category Ranking, and how to adapt voice and the humanize pass for a CFP. |
 | **`cfp-kcdc`** | Extends the base. Replaces its general numbers with KCDC's (lengths, title style, tone), adds per-track themes, how much competition each track has, track benchmarks, and a KCDC review checklist. |
 | **`cfp-codemash`** | Extends the base the same way for CodeMash: shorter word targets, Pre-Compiler guidance, 13 tracks with openness and benchmarks, a KCDC ↔ CodeMash track map, and how to adapt one abstract for both conferences. |
+| **`cfp-stirtrek`** | Extends the base for Stir Trek: the shortest targets (100–180 words), one session type, 9 outcome-based categories with openness and benchmarks, a Stir Trek ↔ CodeMash ↔ KCDC category map, and the Midwest circuit. |
 | **`humanize-writing`** | Copied unchanged from [agent-bob](https://github.com/bob-fornal/agent-bob/tree/main/claude). Finds the generic "AI accent" in prose. |
 | **`write-like-bob`** | Copied unchanged from agent-bob. Bob Fornal's voice, profiled from 121 published articles. |
 
@@ -123,7 +131,7 @@ The two copied skills were written for blog posts and emails. [`voice-and-humani
 - **Shrink:** the bookend summary becomes a one-line closer.
 - **Drop:** headings, bold-italic and code blocks, which CFP fields show as raw symbols.
 
-That file also sets the AI-tell limits from the accepted KCDC abstracts, not from general rules; `cfp-codemash` adds CodeMash's own calibration. To update the copied skills, re-copy them from agent-bob; don't edit them here.
+That file also sets the AI-tell limits from the accepted KCDC abstracts, not from general rules; `cfp-codemash` and `cfp-stirtrek` add their own calibration. To update the copied skills, re-copy them from agent-bob; don't edit them here.
 
 ---
 
@@ -158,6 +166,7 @@ All are Python standard-library scripts; the two fetchers also use `curl`.
 | [`fetch_zoho_backstage.py`](tools/fetch_zoho_backstage.py) | The same for Zoho Backstage sites (e.g. CodeMash), in the same JSON shape. It reads the public agenda, strips HTML from descriptions, derives the format from the session length, and records cancellations (both "[CANCELLED]" and "(Cancelled)"). It drops non-talk tracks with `--exclude-tracks`, or with `--exclude-regex` for names that change between years or contain commas. |
 | [`analyze_sessions.py`](tools/analyze_sessions.py) | Wording and structure statistics: title length, colon use, opening words, common phrases, abstract length and paragraphs, voice markers. |
 | [`check_abstract.py`](tools/check_abstract.py) | Checks a single draft: word count for the format, hook length, AI vocabulary and boilerplate (via humanize-writing's scanner), em-dash rate, sentence-length variation, lists of three, "not just" reframes, payoff line, markdown leftovers, and the closest accepted title (0.6 or higher similarity means it's too close). `--targets LO-HI` overrides the word target with a conference's own. |
+| [`fetch_stirtrek.py`](tools/fetch_stirtrek.py) | Stir Trek's static site: titles, speakers and categories from the sessions table; abstracts from each speaker's page. Panels are dropped unless `--include-panels`. The site's year label is kept in `site_label`; you file under the edition year. |
 | [`sessions_io.py`](tools/sessions_io.py) | Shared year-aware loader: globs and comma lists, conference/year from records or filenames, dedupe, `--year` filtering. |
 | [`score_sessions.py`](tools/score_sessions.py) | Scores sessions on the 11 ranking categories. `corpus` mode prints per-track averages; `draft` mode compares one or more drafts against a track's average. |
 
@@ -247,7 +256,33 @@ From the 139 accepted developer sessions (100 talks, 32 four-hour Pre-Compilers,
 - **AI is concentrated in one track.** AI/ML has 18 sessions, 17 of them AI, and the highest automated bar (116.1). There's no Agentic SDLC track. Web/Front-End and Teams & Collaboration have no AI talks at all.
 - **Evidence (1.5 / 5) is the weakest category in every track**, even lower than at KCDC.
 
-**The same talk can go to both conferences.** 7 talks were accepted at both, 6 with identical abstracts, often in different tracks (*Possessed by Packages* was Security at CodeMash and Front-End at KCDC). 23 speakers presented at both. `cfp-codemash` includes a track map and adaptation steps. The KCDC worked example's v4 lands in CodeMash's Career Development as its #1 closest track, +39.2 above that track's average, though it needs trimming from 199 words.
+**The same talk can go to both conferences.** 7 talks were accepted at both, 6 with identical abstracts, often in different tracks (*Possessed by Packages* was Security at CodeMash and Front-End at KCDC). 23 speakers presented at both. `cfp-codemash` includes a track map and adaptation steps. The KCDC worked example's v4 lands in CodeMash's Career Development as its #1 closest track, +39.2 above that track's average, though at 199 words it's above CodeMash's target. Trimming is optional: repeats were accepted at their original length.
+
+---
+
+## Findings: Stir Trek 2026
+
+From the 55 accepted sessions (one session type, 48 speakers, 9 categories; one panel excluded). Full detail: [`stirtrek-2026-profile.md`](.claude/skills/cfp-stirtrek/references/stirtrek-2026-profile.md), [`stirtrek-tracks.md`](.claude/skills/cfp-stirtrek/references/stirtrek-tracks.md), [`stirtrek-2026-track-scores.md`](.claude/skills/cfp-stirtrek/references/stirtrek-2026-track-scores.md).
+
+| | Stir Trek 2026 | CodeMash 2026 | KCDC 2026 |
+|---|---|---|---|
+| Sessions | **55** | 139 | 203 |
+| Abstract median | **133 words** | 147 | 164 |
+| Title median | 8 words / 55 chars | 8 / 52 | 9 / 58 |
+| "Hook: Clarifier" titles | **40%** | 47% | 51% |
+| Sessions involving AI | 38% | 29% | 44% |
+| Zero flagged AI words | **82%** | 78% | 79% |
+| "you'll learn" | 33% | 28% | 17% |
+| Speakers with 2+ sessions | **15%** | 31% | 45% |
+| Comparable score (/150) | 79.5 | 78.7 | 83.5 |
+
+**What that means**
+- **Small and scarce.** 55 slots, one day, one format. Most speakers get one slot.
+- **Short abstracts can win** with a concrete promise; three accepted abstracts are under 60 words. Target 100–180.
+- **Personal stakes and satire work** (*Ship It First, Fix It Later: How a Medical Crisis Led to a Global Tool*; *The DevOops Handbook*; *Productivity Theater*).
+- **Categories are about outcomes, not technology.** *TypeScript You MIGHT Like* and *When Logs Tell the Whole Story* landed in *Architecture & Platform Engineering*.
+
+**The Midwest circuit: CodeMash (January) → Stir Trek (spring) → KCDC (late summer).** Stir Trek shares 6 talks with CodeMash 2026 and 5 with KCDC 2026, and all of them reused their abstracts (one was trimmed slightly). 19 CodeMash and 14 KCDC speakers also spoke at Stir Trek.
 
 ---
 
@@ -297,10 +332,10 @@ The example's README has every score, the four titles tested for v4, and the com
 
 Most of the work is scripted. Roughly 30 minutes, following [`docs/adding-a-conference.md`](docs/adding-a-conference.md):
 
-1. Fetch the conference's accepted sessions (last year's for the conference you're targeting) with `fetch_sessionize.py` or `fetch_zoho_backstage.py`. For another platform, export to the same JSON shape.
+1. Fetch the conference's accepted sessions (last year's for the conference you're targeting) with `fetch_sessionize.py` or `fetch_zoho_backstage.py`. For a custom site, write a small fetcher like `fetch_stirtrek.py` that outputs the same JSON shape.
 2. Run `analyze_sessions.py` and `score_sessions.py corpus`.
 3. Copy [`templates/conference-skill/`](templates/conference-skill/SKILL.md) to `.claude/skills/cfp-<conf>/`.
-4. Fill it in, mirroring `cfp-kcdc` or `cfp-codemash`: a profile, track notes, annotated examples, track scores, and an openness table.
+4. Fill it in, mirroring `cfp-kcdc`, `cfp-codemash` or `cfp-stirtrek`: a profile, track notes, annotated examples, track scores, and an openness table.
 
 Refresh each year: fetch the new schedule to a **new** `data/<conf>-<year>.json` (past years are never overwritten), add that year's profile and track-scores files beside the old ones, and keep a trends file. See [`docs/data-conventions.md`](docs/data-conventions.md).
 
@@ -340,6 +375,13 @@ Refresh each year: fetch the new schedule to a **new** `data/<conf>-<year>.json`
       codemash-2025-profile.md      2025 statistics, compared with 2026
       codemash-2025-track-scores.md 2025 track averages (history)
       codemash-trends.md            2025 → 2026 changes
+  cfp-stirtrek/               Stir Trek skill: extends the base skill
+    SKILL.md
+    references/
+      stirtrek-2026-profile.md      Statistics from 55 accepted sessions, compared with KCDC and CodeMash
+      stirtrek-tracks.md            9 categories + Stir Trek ↔ CodeMash ↔ KCDC map
+      stirtrek-exemplars.md         6 accepted sessions annotated move-by-move
+      stirtrek-2026-track-scores.md Category averages (the bar to beat)
   humanize-writing/           Copied from agent-bob (unchanged)
   write-like-bob/             Copied from agent-bob (unchanged)
 tools/                        fetch, analyze, check, score (see Tools)
@@ -359,7 +401,7 @@ data/                         Fetched session data, one file per conference-year
 - **Accepted sessions only.** There's no rejected baseline, so patterns describe what got in, not what *caused* acceptance. The guidance leans on patterns that are both common in accepted abstracts and consistent with long-standing reviewer advice.
 - **Speaker reputation.** Well-known speakers get in with plain titles and loose abstracts. Several accepted abstracts have typos or weak openers.
 - **Automated scores are rough.** They're reproducible and comparable, but crude about meaning: a clever-sounding contrarian title scores the same as a real insight. That's why the ranking keeps manual scores alongside them and flags disagreements.
-- **Two conferences, two editions each (KCDC 2025 missing).** The topic mix, especially the AI share, changes fast. Add each new year beside the old; see [`docs/data-conventions.md`](docs/data-conventions.md).
+- **Three conferences; two editions each for KCDC and CodeMash (KCDC 2025 missing), one for Stir Trek.** The topic mix, especially the AI share, changes fast. Add each new year beside the old; see [`docs/data-conventions.md`](docs/data-conventions.md).
 - **Some measures can't be compared across conferences.** Specificity and Track fit are graded against each conference's own sessions, so compare totals within a conference, not between them.
 - **No predictions.** Rankings explain a draft and compare it with accepted work; they don't predict acceptance.
 
@@ -370,4 +412,4 @@ More in [`docs/methodology.md`](docs/methodology.md).
 ## Credits
 
 - **`humanize-writing`** and **`write-like-bob`** by Bob Fornal, from [bob-fornal/agent-bob](https://github.com/bob-fornal/agent-bob).
-- **Session data** comes from the public KCDC and CodeMash schedules. Titles and abstracts belong to their speakers, so this repo commits the tools to fetch the data, not the data itself. The worked examples summarize accepted abstracts instead of copying them.
+- **Session data** comes from the public KCDC, CodeMash and Stir Trek schedules. Titles and abstracts belong to their speakers, so this repo commits the tools to fetch the data, not the data itself. The worked examples summarize accepted abstracts instead of copying them.

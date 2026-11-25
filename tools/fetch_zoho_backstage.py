@@ -4,13 +4,13 @@
 
 Usage:
     python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2026CodeMashConference data/codemash-2026.json \
-        --exclude-tracks "Meals & Entertainment,Sponsors,CodeMash On-Air,Makerspace,KidzMash Sessionz,KidzMash Divez"
+        --exclude-regex "^(Makerspace|KidzMash|Sponsors|Meals|CodeMash On-Air)"
 
 Output: JSON list of {id, title, abstract, speakers, format, track, tags, day, duration, cancelled,
 conference, year}. Conference and year come from --conference/--year or the
 data/<conference>-<year>.json name. Refuses to overwrite an existing file unless --force.
 Sessions without a speaker or a description are dropped (meals, open play, etc.).
-"[CANCELLED]" prefixes are stripped from titles and recorded in `cancelled`;
+"[CANCELLED]" / "(Cancelled)" prefixes are stripped from titles and recorded in `cancelled`;
 they were accepted, so they stay in the corpus.
 
 Format is derived from duration: >= 360 min -> Full-Day Workshop, >= 180 -> Half-Day Workshop
@@ -72,6 +72,8 @@ def main() -> None:
     ap.add_argument("page_url")
     ap.add_argument("out")
     ap.add_argument("--exclude-tracks", default="", help="comma-separated track names to drop")
+    ap.add_argument("--exclude-regex", default="", help="drop tracks whose name matches (case-insensitive), "
+                    "e.g. '^(Makerspace|KidzMash|Sponsors|Meals|CodeMash On-Air)'; handles names with commas")
     ap.add_argument("--conference")
     ap.add_argument("--year", type=int)
     ap.add_argument("--force", action="store_true", help="overwrite an existing file (same year re-fetch)")
@@ -99,6 +101,7 @@ def main() -> None:
         tags[st["session"]].append(tag_name.get(st["tag"], ""))
     day = {ag["id"]: ag["index"] for ag in site.get("agendas", [])}
     excluded = {t.strip() for t in a.exclude_tracks.split(",") if t.strip()}
+    exclude_re = re.compile(a.exclude_regex, re.I) if a.exclude_regex else None
 
     out = []
     for s in site.get("sessions", []):
@@ -106,10 +109,11 @@ def main() -> None:
         t = text.get(s["id"], {})
         title = (t.get("title") or "").strip()
         desc = clean(t.get("description") or "")
-        if not tr or tr in excluded or not by_session[s["id"]] or not desc:
+        if not tr or tr in excluded or (exclude_re and exclude_re.search(tr)) or not by_session[s["id"]] or not desc:
             continue
-        cancelled = bool(re.match(r"\[cancell?ed\]\s*", title, re.I))
-        title = re.sub(r"^\[cancell?ed\]\s*", "", title, flags=re.I)
+        cancel_mark = r"^[\[(]\s*cancell?ed\s*[\])]\s*[-:]?\s*"  # "[CANCELLED]" (2026) or "(Cancelled)" (2025)
+        cancelled = bool(re.match(cancel_mark, title, re.I))
+        title = re.sub(cancel_mark, "", title, flags=re.I)
         out.append({
             "id": s["id"], "title": title, "abstract": desc, "speakers": by_session[s["id"]],
             "format": fmt_for(int(s.get("duration") or 60)), "track": tr, "tags": tags.get(s["id"], []),

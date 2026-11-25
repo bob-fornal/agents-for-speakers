@@ -2,7 +2,11 @@
 
 Claude Code skills that help you write conference talk **titles and abstracts** that look like the ones that get accepted. They're built from an analysis of real accepted sessions, write in the speaker's own voice, and score every draft against the track it's aimed at.
 
-Two conferences are covered so far: **KCDC** (all 203 sessions accepted for 2026) and **CodeMash** (all 139 developer sessions accepted for 2026). The fetch tools work on any conference whose schedule is published through **Sessionize** or **Zoho Backstage**.
+Two conferences are covered so far, with two editions each:
+- **KCDC:** 2026 (203 sessions) and 2024 (200). The 2025 schedule couldn't be recovered.
+- **CodeMash:** 2026 (139 developer sessions) and 2025 (149).
+
+That's 691 accepted sessions in all, plus year-over-year trends. The fetch tools work on any conference whose schedule is published through **Sessionize** or **Zoho Backstage**.
 
 ---
 
@@ -15,6 +19,7 @@ Two conferences are covered so far: **KCDC** (all 203 sessions accepted for 2026
 - [Tools](#tools)
 - [Findings: KCDC 2026](#findings-kcdc-2026)
 - [Findings: CodeMash 2026](#findings-codemash-2026)
+- [Trends across years](#trends-across-years)
 - [Worked example](#worked-example)
 - [Adding another conference](#adding-another-conference)
 - [Repository layout](#repository-layout)
@@ -34,7 +39,15 @@ python3 tools/fetch_sessionize.py https://www.kcdc.info/sessions data/kcdc-2026.
 ```
 
 ```bash
-python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2026CodeMashConference data/codemash-2026.json --exclude-tracks "Meals & Entertainment,Sponsors,CodeMash On-Air,Makerspace,KidzMash Sessionz,KidzMash Divez"
+python3 tools/fetch_sessionize.py 4i0ww64n data/kcdc-2024.json
+```
+
+```bash
+python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2025CodeMashConference data/codemash-2025.json --exclude-regex "^(Makerspace|KidzMash|Sponsors|Meals|CodeMash On-Air)"
+```
+
+```bash
+python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2026CodeMashConference data/codemash-2026.json --exclude-regex "^(Makerspace|KidzMash|Sponsors|Meals|CodeMash On-Air)"
 ```
 
 **2. Open Claude Code in this folder.** The skills live in `.claude/skills/`, so they load automatically. Ask naturally:
@@ -142,7 +155,7 @@ All are Python standard-library scripts; the two fetchers also use `curl`.
 | Tool | What it does |
 |---|---|
 | [`fetch_sessionize.py`](tools/fetch_sessionize.py) | Downloads every accepted session (title, abstract, speakers, format, track) from any conference that publishes its schedule through Sessionize. Takes the schedule page URL or the Sessionize event ID. |
-| [`fetch_zoho_backstage.py`](tools/fetch_zoho_backstage.py) | The same for Zoho Backstage sites (e.g. CodeMash), in the same JSON shape. It reads the public agenda, strips HTML from descriptions, derives the format from the session length, records cancellations, and drops non-talk tracks with `--exclude-tracks`. |
+| [`fetch_zoho_backstage.py`](tools/fetch_zoho_backstage.py) | The same for Zoho Backstage sites (e.g. CodeMash), in the same JSON shape. It reads the public agenda, strips HTML from descriptions, derives the format from the session length, and records cancellations (both "[CANCELLED]" and "(Cancelled)"). It drops non-talk tracks with `--exclude-tracks`, or with `--exclude-regex` for names that change between years or contain commas. |
 | [`analyze_sessions.py`](tools/analyze_sessions.py) | Wording and structure statistics: title length, colon use, opening words, common phrases, abstract length and paragraphs, voice markers. |
 | [`check_abstract.py`](tools/check_abstract.py) | Checks a single draft: word count for the format, hook length, AI vocabulary and boilerplate (via humanize-writing's scanner), em-dash rate, sentence-length variation, lists of three, "not just" reframes, payoff line, markdown leftovers, and the closest accepted title (0.6 or higher similarity means it's too close). `--targets LO-HI` overrides the word target with a conference's own. |
 | [`sessions_io.py`](tools/sessions_io.py) | Shared year-aware loader: globs and comma lists, conference/year from records or filenames, dedupe, `--year` filtering. |
@@ -238,6 +251,29 @@ From the 139 accepted developer sessions (100 talks, 32 four-hour Pre-Compilers,
 
 ---
 
+## Trends across years
+
+Full detail: [`kcdc-trends.md`](.claude/skills/cfp-kcdc/references/kcdc-trends.md), [`codemash-trends.md`](.claude/skills/cfp-codemash/references/codemash-trends.md).
+
+| Signal | KCDC 2024 → 2026 | CodeMash 2025 → 2026 |
+|---|---|---|
+| Sessions involving AI | 12% → **44%** | 10% → **29%** |
+| "Leave / walk away with" payoff | 10% → **34%** | 17% → **37%** |
+| Zero flagged AI words | 71% → 79% | 62% → 78% |
+| Talk abstract median | 128 → 164 words | 142 → 147 words |
+| Comparable score (excludes Fit and Specificity; /150) | 71.0 → **83.5** (+12.5) | 75.9 → 78.7 (+2.8) |
+| Prior-year talks re-accepted | 0 | **6** (5 word-for-word) |
+| Returning speakers | 49 of 145 | 41 of 111 |
+| Track changes | + Agentic SDLC; JavaScript → Front-End; − Mobile | AI/ML/Data → AI/ML + Databases |
+
+- **AI roughly tripled at both conferences**, and both now give it its own track(s).
+- **The payoff line went from optional to expected.** About a third of accepted abstracts now say what you leave with.
+- **The "AI accent" peaked in 2024–25 and faded.** *delve* appeared in 16 KCDC 2024 abstracts and 1 in 2026.
+- **KCDC's bar rose; CodeMash's held.** KCDC abstracts became longer, more structured and more explicit. CodeMash changed topics, not craft.
+- **Resubmission works differently.** CodeMash re-accepts proven talks unchanged; KCDC's returning speakers brought new ones.
+
+---
+
 ## Worked example
 
 [`examples/kcdc-cfp-talk/`](examples/kcdc-cfp-talk/README.md) takes one talk (about this repo) through four drafts. Each draft fixed the weakest category the previous ranking found:
@@ -291,6 +327,9 @@ Refresh each year: fetch the new schedule to a **new** `data/<conf>-<year>.json`
       kcdc-tracks.md            15 tracks: themes, style, accepted titles
       kcdc-exemplars.md         7 accepted sessions annotated move-by-move
       kcdc-2026-track-scores.md Category averages by track (the bar to beat)
+      kcdc-2024-profile.md      2024 statistics, compared with 2026
+      kcdc-2024-track-scores.md 2024 track averages (history)
+      kcdc-trends.md            2024 → 2026 changes; 2025 missing
   cfp-codemash/               CodeMash skill: extends the base skill
     SKILL.md
     references/
@@ -298,6 +337,9 @@ Refresh each year: fetch the new schedule to a **new** `data/<conf>-<year>.json`
       codemash-tracks.md            13 tracks + KCDC ↔ CodeMash track map
       codemash-exemplars.md         6 accepted sessions annotated move-by-move
       codemash-2026-track-scores.md Category averages by track (the bar to beat)
+      codemash-2025-profile.md      2025 statistics, compared with 2026
+      codemash-2025-track-scores.md 2025 track averages (history)
+      codemash-trends.md            2025 → 2026 changes
   humanize-writing/           Copied from agent-bob (unchanged)
   write-like-bob/             Copied from agent-bob (unchanged)
 tools/                        fetch, analyze, check, score (see Tools)
@@ -317,7 +359,7 @@ data/                         Fetched session data, one file per conference-year
 - **Accepted sessions only.** There's no rejected baseline, so patterns describe what got in, not what *caused* acceptance. The guidance leans on patterns that are both common in accepted abstracts and consistent with long-standing reviewer advice.
 - **Speaker reputation.** Well-known speakers get in with plain titles and loose abstracts. Several accepted abstracts have typos or weak openers.
 - **Automated scores are rough.** They're reproducible and comparable, but crude about meaning: a clever-sounding contrarian title scores the same as a real insight. That's why the ranking keeps manual scores alongside them and flags disagreements.
-- **Two conferences, one year each (so far).** The topic mix, especially the AI share, changes fast. Add each new year beside the old; see [`docs/data-conventions.md`](docs/data-conventions.md).
+- **Two conferences, two editions each (KCDC 2025 missing).** The topic mix, especially the AI share, changes fast. Add each new year beside the old; see [`docs/data-conventions.md`](docs/data-conventions.md).
 - **Some measures can't be compared across conferences.** Specificity and Track fit are graded against each conference's own sessions, so compare totals within a conference, not between them.
 - **No predictions.** Rankings explain a draft and compare it with accepted work; they don't predict acceptance.
 

@@ -8,6 +8,21 @@
 - **Parsed fields:** title, description (abstract), speakers, `session_format`, `track`.
 - **Result:** 203 unique sessions (179 talks, 19 half-day, 5 full-day workshops), 145 unique speakers, 15 tracks.
 
+### KCDC 2024
+- **Source:** Sessionize embed `4i0ww64n`, still linked from the live `kcdc.info/agenda-old` page. The session dates (June 26–28, 2024) confirm the edition.
+- **Result:** 200 sessions (176 talks, 21 half-day, 3 full-day), 153 speakers, 15 tracks.
+
+### KCDC 2025 (not available)
+Searched without success:
+- the live site (`/sessions`, `/agenda`, `/agenda-old`, `/speakers`);
+- Wayback Machine snapshots (none of the schedule from 2025);
+- a web search;
+- 323 Sessionize embed IDs archived between May and Sept 2025. Their small loader scripts name the event's city: two were in Kansas City, but neither had KCDC's August 13–15 dates.
+
+### CodeMash 2025
+- **Page:** https://events.codemash.org/2025CodeMashConference (event `76186000002828001`, same portal and endpoint as 2026).
+- **Result:** 149 sessions after the same exclusions (111 talks, 32 Pre-Compilers, 6 two-hour workshops), 117 speakers, 12 tracks. 2025 marks cancellations as "(Cancelled)" rather than "[CANCELLED]"; the fetcher handles both.
+
 ### CodeMash 2026
 - **Page:** https://events.codemash.org/2026CodeMashConference — a Zoho Backstage site (event `76186000006678002`, portal `811345730`).
 - **Fetched:** 2026-11-24, via the site's public agenda endpoint `/public/site?…&eventId=…&portalId=…`. It's the same JSON the agenda page loads, and needs no sign-in. The endpoint was found by watching the agenda page's network requests.

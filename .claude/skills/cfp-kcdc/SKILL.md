@@ -61,6 +61,33 @@ Choose the track deliberately; competition is uneven. Detail and example titles 
 * **Low-AI classic tracks:** Architecture (2/15), Cloud (2/11), Data (2/10), DevOps (3/12), Human Skills (1/12), Other Tech (1/10). Strong fundamentals talks compete here without an AI angle — don't force one.
 * **Recurring platform themes:** .NET → **Aspire** (4 talks), MCP, Blazor, EF Core. Java → Spring Boot 4, JVM memory, new-Java features. Data → **Postgres** (3 talks), data modeling (3). DevOps → OpenTelemetry, GitOps, platform/golden paths.
 
+### Openness scores for the track ranking (KCDC 2026)
+Used by the track ranking in `cfp-speaker-abstracts/references/category-ranking.md` (B).
+
+**For a talk with an AI angle**, openness comes from the track's 2026 AI share: ≤ 20% → 5 · 21–40% → 4 · 41–60% → 3 · 61–80% → 2 · > 80% → 1.
+
+| Track | AI share | AI-talk openness |
+|---|---|---|
+| Human Skills | 1/12 (8%) | 5 |
+| Other Technologies | 1/10 (10%) | 5 |
+| Architecture | 2/15 (13%) | 5 |
+| Cloud | 2/11 (18%) | 5 |
+| Data Systems and Platforms | 2/10 (20%) | 5 |
+| DevOps | 3/12 (25%) | 4 |
+| Front-End Engineering | 4/15 (27%) | 4 |
+| .NET | 4/14 (29%) | 4 |
+| Methodologies and Process Management | 4/13 (31%) | 4 |
+| UI/UX and Design | 3/9 (33%) | 4 |
+| Java | 6/14 (43%) | 3 |
+| Security | 9/17 (53%) | 3 |
+| Testing and QA | 5/8 (63%) | 2 |
+| AI and Machine Learning | 21/21 (100%) | 1 |
+| Agentic SDLC | 22/22 (100%) | 1 |
+
+**For a talk without an AI angle**, score openness on track size (more slots → higher) minus topic saturation, for example a 4th Aspire talk in .NET or a 4th Postgres talk in Data. Say which you used.
+
+Openness is only one input. A low-openness track can still be the right primary if fit is much higher (AI-and-ML-native topics belong in AI and ML).
+
 ## 4. Submission plan (KCDC-specific)
 
 1. **Submit 2–4 distinct sessions** across at least 2 tracks. Nearly half of accepted speakers have multiple sessions; give the committee choices.
@@ -77,6 +104,7 @@ Choose the track deliberately; competition is uneven. Detail and example titles 
 - [ ] Payoff line present ("You'll leave with…" / "By the end…")
 - [ ] Practitioner signal: production, real-world, practical, or a real number
 - [ ] Humor (if any) is paired with a literal clarifier
+- [ ] Category Ranking delivered: content (A) with KCDC stats cited, track (B) using the openness table above, and benchmark (C) against the target track's 2026 average from [references/kcdc-2026-track-scores.md](references/kcdc-2026-track-scores.md). Aim to beat the track's average total; Evidence (avg 1.6) and Audience (1.7) are the cheapest categories to win
 - [ ] Workshop: prerequisites + what participants build + what's provided
 - [ ] Not near-duplicate of the user's other KCDC submissions
 - [ ] Not a clone of a 2026 accepted title, and the checker is clean or every LOOK has been reviewed:

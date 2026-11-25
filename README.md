@@ -15,6 +15,7 @@ Claude Code skills that help write conference talk **titles and abstracts** with
       anti-patterns.md        What weakens a submission and how to fix it
       review-rubric.md        10-criterion scoring rubric + reviewer-notes checklist
       voice-and-humanize.md   CFP adaptation of humanize-writing + write-like-bob, KCDC-calibrated
+      category-ranking.md     Ranks the content and track categories behind every generated CFP
   humanize-writing/           Vendored from bob-fornal/agent-bob: AI-tell checklist + scanner
   write-like-bob/             Vendored from bob-fornal/agent-bob: Bob Fornal's voice profile
   cfp-kcdc/                   Conference-specific skill: KCDC
@@ -23,15 +24,19 @@ Claude Code skills that help write conference talk **titles and abstracts** with
       kcdc-2026-profile.md    Full statistics from 203 accepted 2026 sessions
       kcdc-tracks.md          All 15 tracks: themes, style, accepted titles
       kcdc-exemplars.md       7 accepted sessions annotated move-by-move
+      kcdc-2026-track-scores.md  Average category scores by track (the bar to beat)
 docs/
   methodology.md              How the analysis was done, and its limits
   adding-a-conference.md      Build a new conference skill in ~30 minutes
 templates/
   conference-skill/SKILL.md   Starter template for a new conference skill
+examples/
+  kcdc-cfp-talk/              Worked example: one KCDC talk, four drafts, scored at each step
 tools/
   fetch_sessionize.py         Pull accepted sessions from any Sessionize-embedded schedule
   analyze_sessions.py         Compute title/abstract wording & structure stats
   check_abstract.py           Lint a title + abstract draft (AI tells, length, triads, accepted-title clones)
+  score_sessions.py           Score sessions on the 11 ranking categories; track averages + draft benchmarks
 data/                         Local scraped data (git-ignored)
 ```
 

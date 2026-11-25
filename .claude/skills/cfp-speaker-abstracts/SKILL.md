@@ -64,6 +64,15 @@ NOTES FOR REVIEWERS (if the CFP has a private notes field):
 <evidence, prior deliveries, demo plan, why you — things that don't belong in the public abstract>
 ```
 
+Then, **always**, the **Category Ranking** from [references/category-ranking.md](references/category-ranking.md):
+- **A. Content categories:** the 11 fixed categories ranked by Weight × Strength, each with where it shows up in the draft and the data behind it, plus the single **Next fix**.
+- **B. Track categories:** 2–4 candidate tracks ranked by Fit × 2 + Openness + Novelty, whenever conference track data is available.
+- **C. Automated benchmark:** `tools/score_sessions.py draft …` against the target track's accepted average, with manual-vs-automated disagreements called out, whenever corpus data is available.
+
+The CFP-ready block is what gets pasted. The ranking is for the speaker and is never pasted into the CFP.
+
+**Worked example:** [examples/kcdc-cfp-talk/](../../../examples/kcdc-cfp-talk/README.md) shows one talk taken through four drafts, with manual and automated scores at each step, the disagreements between them, and what each fix changed. Use it to calibrate manual scoring.
+
 ## 3. Core rules
 
 ### Titles

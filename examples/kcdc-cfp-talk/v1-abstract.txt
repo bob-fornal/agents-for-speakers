@@ -1,0 +1,7 @@
+Most talk abstracts start from a blank page and a hunch.
+
+So I pulled all 203 sessions accepted at KCDC 2026 and had an AI agent take them apart: title length, colon use, opening lines, closing lines, and which tracks were crowded versus wide open. The patterns were surprisingly consistent. Half the titles share one shape. A third of the abstracts end by telling you exactly what you'll walk away with. And a few weak habits got accepted anyway.
+
+In this session, we'll walk through what accepted sessions have in common, the title formulas and openers that keep showing up, and what accepted-only data can't tell you. Then we'll turn those findings into reusable Claude Code skills, one for any conference and one tuned to KCDC, and use them live to take a rough talk idea to a submission-ready title and abstract.
+
+You'll leave with a three-part abstract blueprint, a 10-point review rubric, and a toolkit you can point at any Sessionize-powered conference before its next CFP deadline.

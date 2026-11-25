@@ -2,12 +2,13 @@
 
 Claude Code skills that help you write conference talk **titles and abstracts** that look like the ones that get accepted. They're built from an analysis of real accepted sessions, write in the speaker's own voice, and score every draft against the track it's aimed at.
 
-Three Midwest conferences are covered so far:
+Four Midwest conferences are covered so far:
 - **KCDC:** 2026 (203 sessions) and 2024 (200). The 2025 schedule couldn't be recovered.
 - **CodeMash:** 2026 (139 developer sessions) and 2025 (149).
 - **Stir Trek:** 2026 (55 sessions). Its site labels this lineup "2027".
+- **Momentum Dev Con:** 2026 (36 sessions: 30 full talks and 6 lightning talks).
 
-That's 746 accepted sessions in all, plus year-over-year trends and cross-conference comparisons. The fetch tools cover **Sessionize**, **Zoho Backstage**, and Stir Trek's static site.
+That's 782 accepted sessions in all, plus year-over-year trends and cross-conference comparisons. The fetch tools cover **Sessionize**, **Zoho Backstage**, **Gatsby sites built from Sessionize**, and Stir Trek's static site.
 
 ---
 
@@ -21,6 +22,7 @@ That's 746 accepted sessions in all, plus year-over-year trends and cross-confer
 - [Findings: KCDC 2026](#findings-kcdc-2026)
 - [Findings: CodeMash 2026](#findings-codemash-2026)
 - [Findings: Stir Trek 2026](#findings-stir-trek-2026)
+- [Findings: Momentum Dev Con 2026](#findings-momentum-dev-con-2026)
 - [Trends across years](#trends-across-years)
 - [Worked example](#worked-example)
 - [Adding another conference](#adding-another-conference)
@@ -53,6 +55,10 @@ python3 tools/fetch_stirtrek.py https://stirtrek.com/sessions/ data/stirtrek-202
 ```
 
 ```bash
+python3 tools/fetch_gatsby_sessionize.py https://momentumdevcon.com/sessions data/momentum-2026.json --topic-map tools/maps/momentum-topic-families.json --exclude-formats "Sponsor|Keynote"
+```
+
+```bash
 python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2026CodeMashConference data/codemash-2026.json --exclude-regex "^(Makerspace|KidzMash|Sponsors|Meals|CodeMash On-Air)"
 ```
 
@@ -71,6 +77,7 @@ Or invoke a skill directly:
 | `/cfp-kcdc` | Anything aimed at KCDC (loads the base skill too) |
 | `/cfp-codemash` | Anything aimed at CodeMash, including 4-hour Pre-Compilers (loads the base skill too) |
 | `/cfp-stirtrek` | Anything aimed at Stir Trek (loads the base skill too) |
+| `/cfp-momentum` | Anything aimed at Momentum Dev Con, including lightning talks (loads the base skill too) |
 | `/cfp-speaker-abstracts` | Any other conference, a conference-agnostic draft, or one talk adapted for several conferences |
 
 **3. Check a draft yourself** at any time (conference skills give the word targets):
@@ -110,8 +117,9 @@ The skills never invent numbers or experience for you. Missing evidence becomes 
 
 ```
 cfp-kcdc ──────┐
-cfp-codemash ──┼─► extends ──► cfp-speaker-abstracts ──► uses ──► humanize-writing
-cfp-stirtrek ──┘               (workflow, formulas,              (AI-tell checklist + scanner)
+cfp-codemash ──┤
+cfp-stirtrek ──┼─► extends ──► cfp-speaker-abstracts ──► uses ──► humanize-writing
+cfp-momentum ──┘               (workflow, formulas,              (AI-tell checklist + scanner)
  (per-conference numbers,       blueprint, rubric,
   tracks, openness,             category ranking)       ──► uses ──► write-like-bob
   benchmarks)                                                        (speaker voice, CFP-adapted)
@@ -123,6 +131,7 @@ cfp-stirtrek ──┘               (workflow, formulas,              (AI-tell 
 | **`cfp-kcdc`** | Extends the base. Replaces its general numbers with KCDC's (lengths, title style, tone), adds per-track themes, how much competition each track has, track benchmarks, and a KCDC review checklist. |
 | **`cfp-codemash`** | Extends the base the same way for CodeMash: shorter word targets, Pre-Compiler guidance, 13 tracks with openness and benchmarks, a KCDC ↔ CodeMash track map, and how to adapt one abstract for both conferences. |
 | **`cfp-stirtrek`** | Extends the base for Stir Trek: the shortest targets (100–180 words), one session type, 9 outcome-based categories with openness and benchmarks, a Stir Trek ↔ CodeMash ↔ KCDC category map, and the Midwest circuit. |
+| **`cfp-momentum`** | Extends the base for Momentum Dev Con: full-talk (150–230) and lightning (60–140) targets, multi-select topics grouped into derived families, a topic-level openness table, and the highest accepted bar on file. |
 | **`humanize-writing`** | Copied unchanged from [agent-bob](https://github.com/bob-fornal/agent-bob/tree/main/claude). Finds the generic "AI accent" in prose. |
 | **`write-like-bob`** | Copied unchanged from agent-bob. Bob Fornal's voice, profiled from 121 published articles. |
 
@@ -131,7 +140,7 @@ The two copied skills were written for blog posts and emails. [`voice-and-humani
 - **Shrink:** the bookend summary becomes a one-line closer.
 - **Drop:** headings, bold-italic and code blocks, which CFP fields show as raw symbols.
 
-That file also sets the AI-tell limits from the accepted KCDC abstracts, not from general rules; `cfp-codemash` and `cfp-stirtrek` add their own calibration. To update the copied skills, re-copy them from agent-bob; don't edit them here.
+That file also sets the AI-tell limits from the accepted KCDC abstracts, not from general rules; `cfp-codemash`, `cfp-stirtrek` and `cfp-momentum` add their own calibration. To update the copied skills, re-copy them from agent-bob; don't edit them here.
 
 ---
 
@@ -167,6 +176,7 @@ All are Python standard-library scripts; the two fetchers also use `curl`.
 | [`analyze_sessions.py`](tools/analyze_sessions.py) | Wording and structure statistics: title length, colon use, opening words, common phrases, abstract length and paragraphs, voice markers. |
 | [`check_abstract.py`](tools/check_abstract.py) | Checks a single draft: word count for the format, hook length, AI vocabulary and boilerplate (via humanize-writing's scanner), em-dash rate, sentence-length variation, lists of three, "not just" reframes, payoff line, markdown leftovers, and the closest accepted title (0.6 or higher similarity means it's too close). `--targets LO-HI` overrides the word target with a conference's own. |
 | [`fetch_stirtrek.py`](tools/fetch_stirtrek.py) | Stir Trek's static site: titles, speakers and categories from the sessions table; abstracts from each speaker's page. Panels are dropped unless `--include-panels`. The site's year label is kept in `site_label`; you file under the edition year. |
+| [`fetch_gatsby_sessionize.py`](tools/fetch_gatsby_sessionize.py) | Gatsby sites built with gatsby-source-sessionize (e.g. Momentum Dev Con). It reads the site's published static-query JSON, identifies the format, level and topic groups by their values, and sets the track to the first-listed topic. `--topic-map` groups topics into families (see [`tools/maps/`](tools/maps/momentum-topic-families.json)); `--exclude-formats` drops sponsor or keynote slots. |
 | [`sessions_io.py`](tools/sessions_io.py) | Shared year-aware loader: globs and comma lists, conference/year from records or filenames, dedupe, `--year` filtering. |
 | [`score_sessions.py`](tools/score_sessions.py) | Scores sessions on the 11 ranking categories. `corpus` mode prints per-track averages; `draft` mode compares one or more drafts against a track's average. |
 
@@ -286,6 +296,32 @@ From the 55 accepted sessions (one session type, 48 speakers, 9 categories; one 
 
 ---
 
+## Findings: Momentum Dev Con 2026
+
+From the 36 accepted CFP sessions (30 full talks of 45 minutes and 6 lightning talks of 5 minutes; 32 speakers; the keynote and 5 sponsor slots excluded). Full detail: [`momentum-2026-profile.md`](.claude/skills/cfp-momentum/references/momentum-2026-profile.md), [`momentum-tracks.md`](.claude/skills/cfp-momentum/references/momentum-tracks.md), [`momentum-2026-track-scores.md`](.claude/skills/cfp-momentum/references/momentum-2026-track-scores.md).
+
+| | Momentum | Stir Trek | CodeMash | KCDC |
+|---|---|---|---|---|
+| Sessions | **36** | 55 | 139 | 203 |
+| Talk abstract median | **181 words** | 133 | 147 | 164 |
+| Title median | **9.5 words / 62.5 chars** | 8 / 55 | 8 / 52 | 9 / 58 |
+| "Hook: Clarifier" titles | **58%** | 40% | 47% | 51% |
+| Sessions involving AI | **53%** | 38% | 29% | 44% |
+| First person (I / my) | **42%** | 20% | 12% | 25% |
+| Zero flagged AI words | **94%** | 82% | 78% | 79% |
+| Comparable score (/150) | **86.0** | 79.5 | 78.7 | 83.5 |
+
+**What that means**
+- **The highest accepted bar on file.** It has the highest comparable score, the cleanest writing, and the most evidence (31% cite numbers).
+- **First-person pitches.** 42% of abstracts are written as "I" and few read like a course outline ("you'll learn" appears in only 14%).
+- **AI in half the program,** and inside non-AI topics too (40% of Career Growth, 42% of Architecture).
+- **Topics, not tracks.** Speakers choose several of 21 topics plus a level. The first topic listed decides how a talk is categorized, so lead with the one that matches the outcome.
+- **Lightning talks still get full abstracts** (median 114 words), built around one idea.
+
+On the circuit, Momentum shares 3 talks with Stir Trek and 1 each with KCDC and CodeMash. *Possessed by Packages* ran at three conferences with the same 90-word abstract. The KCDC worked example's v4 fits Momentum's Career & Leadership best of all four conferences: #1 by vocabulary, +40.0 above the average, and within the length target.
+
+---
+
 ## Trends across years
 
 Full detail: [`kcdc-trends.md`](.claude/skills/cfp-kcdc/references/kcdc-trends.md), [`codemash-trends.md`](.claude/skills/cfp-codemash/references/codemash-trends.md).
@@ -332,10 +368,10 @@ The example's README has every score, the four titles tested for v4, and the com
 
 Most of the work is scripted. Roughly 30 minutes, following [`docs/adding-a-conference.md`](docs/adding-a-conference.md):
 
-1. Fetch the conference's accepted sessions (last year's for the conference you're targeting) with `fetch_sessionize.py` or `fetch_zoho_backstage.py`. For a custom site, write a small fetcher like `fetch_stirtrek.py` that outputs the same JSON shape.
+1. Fetch the conference's accepted sessions (last year's for the conference you're targeting) with `fetch_sessionize.py`, `fetch_zoho_backstage.py` or `fetch_gatsby_sessionize.py`. For a custom site, write a small fetcher like `fetch_stirtrek.py` that outputs the same JSON shape.
 2. Run `analyze_sessions.py` and `score_sessions.py corpus`.
 3. Copy [`templates/conference-skill/`](templates/conference-skill/SKILL.md) to `.claude/skills/cfp-<conf>/`.
-4. Fill it in, mirroring `cfp-kcdc`, `cfp-codemash` or `cfp-stirtrek`: a profile, track notes, annotated examples, track scores, and an openness table.
+4. Fill it in, mirroring `cfp-kcdc`, `cfp-codemash`, `cfp-stirtrek` or `cfp-momentum`: a profile, track notes, annotated examples, track scores, and an openness table.
 
 Refresh each year: fetch the new schedule to a **new** `data/<conf>-<year>.json` (past years are never overwritten), add that year's profile and track-scores files beside the old ones, and keep a trends file. See [`docs/data-conventions.md`](docs/data-conventions.md).
 
@@ -382,6 +418,13 @@ Refresh each year: fetch the new schedule to a **new** `data/<conf>-<year>.json`
       stirtrek-tracks.md            9 categories + Stir Trek ↔ CodeMash ↔ KCDC map
       stirtrek-exemplars.md         6 accepted sessions annotated move-by-move
       stirtrek-2026-track-scores.md Category averages (the bar to beat)
+  cfp-momentum/               Momentum Dev Con skill: extends the base skill
+    SKILL.md
+    references/
+      momentum-2026-profile.md      Statistics from 36 accepted sessions, compared with the others
+      momentum-tracks.md            21 topics → 8 derived families + topic map to the other conferences
+      momentum-exemplars.md         6 accepted sessions annotated move-by-move
+      momentum-2026-track-scores.md Category averages by family (the bar to beat)
   humanize-writing/           Copied from agent-bob (unchanged)
   write-like-bob/             Copied from agent-bob (unchanged)
 tools/                        fetch, analyze, check, score (see Tools)
@@ -401,7 +444,7 @@ data/                         Fetched session data, one file per conference-year
 - **Accepted sessions only.** There's no rejected baseline, so patterns describe what got in, not what *caused* acceptance. The guidance leans on patterns that are both common in accepted abstracts and consistent with long-standing reviewer advice.
 - **Speaker reputation.** Well-known speakers get in with plain titles and loose abstracts. Several accepted abstracts have typos or weak openers.
 - **Automated scores are rough.** They're reproducible and comparable, but crude about meaning: a clever-sounding contrarian title scores the same as a real insight. That's why the ranking keeps manual scores alongside them and flags disagreements.
-- **Three conferences; two editions each for KCDC and CodeMash (KCDC 2025 missing), one for Stir Trek.** The topic mix, especially the AI share, changes fast. Add each new year beside the old; see [`docs/data-conventions.md`](docs/data-conventions.md).
+- **Four conferences; two editions each for KCDC and CodeMash (KCDC 2025 missing), one each for Stir Trek and Momentum.** Momentum's families are derived from speaker-chosen topics and most are tiny. The topic mix, especially the AI share, changes fast. Add each new year beside the old; see [`docs/data-conventions.md`](docs/data-conventions.md).
 - **Some measures can't be compared across conferences.** Specificity and Track fit are graded against each conference's own sessions, so compare totals within a conference, not between them.
 - **No predictions.** Rankings explain a draft and compare it with accepted work; they don't predict acceptance.
 
@@ -412,4 +455,4 @@ More in [`docs/methodology.md`](docs/methodology.md).
 ## Credits
 
 - **`humanize-writing`** and **`write-like-bob`** by Bob Fornal, from [bob-fornal/agent-bob](https://github.com/bob-fornal/agent-bob).
-- **Session data** comes from the public KCDC, CodeMash and Stir Trek schedules. Titles and abstracts belong to their speakers, so this repo commits the tools to fetch the data, not the data itself. The worked examples summarize accepted abstracts instead of copying them.
+- **Session data** comes from the public KCDC, CodeMash, Stir Trek and Momentum Dev Con schedules. Titles and abstracts belong to their speakers, so this repo commits the tools to fetch the data, not the data itself. The worked examples summarize accepted abstracts instead of copying them.

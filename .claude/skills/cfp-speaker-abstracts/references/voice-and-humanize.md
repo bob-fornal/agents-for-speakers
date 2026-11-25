@@ -15,16 +15,16 @@ Both were written for long-form prose such as blog posts, emails and articles. A
 
 `humanize-writing` warns that no single tell proves anything. What reads as AI is a cluster of tells. Running its scanner across the accepted abstracts of both conferences gives real limits to aim for:
 
-| Signal | KCDC 2026 (203) | CodeMash 2026 (139) | Stir Trek 2026 (55) | Target for a draft |
-|---|---|---|---|---|
-| Flagged vocabulary (robust, leverage, enhance, landscape…) | 79% have **zero**; top: *robust* ×10, *leverage* ×10 | 78% have **zero**; top: *leverage* ×8, *robust* ×7, *landscape* ×6 | **82%** have zero | **0**. A plainer word almost always exists |
-| Boilerplate phrases ("it's important to note", "in today's fast-paced"…) | **none** | **none** | **none** | **0** |
-| Em dashes per 100 words | median 0, p90 1.3 | median 0, p90 1.4 | median 0, p90 1.4 | ≤ 1.5 |
-| Burstiness (sentence-length stdev ÷ mean) | p25 0.31, **median 0.43** | p25 0.26, **median 0.37** | p25 0.32, **median 0.39** | **≥ 0.35** |
-| "A, B, and C" lists | median 2, p75 3 | median 2, p75 3 | median 1, p75 3 | **≤ 3**, with list lengths varied |
-| "not just X / isn't just X" | 11% use it; only 2 use it twice | 9% | 13% | **≤ 1** |
+| Signal | KCDC 2026 (203) | CodeMash 2026 (139) | Stir Trek 2026 (55) | Momentum 2026 (36) | Target for a draft |
+|---|---|---|---|---|---|
+| Flagged vocabulary (robust, leverage, enhance, landscape…) | 79% have **zero**; top: *robust* ×10, *leverage* ×10 | 78% have **zero**; top: *leverage* ×8, *robust* ×7, *landscape* ×6 | **82%** have zero | **94%** have zero | **0**. A plainer word almost always exists |
+| Boilerplate phrases ("it's important to note", "in today's fast-paced"…) | **none** | **none** | **none** | **none** | **0** |
+| Em dashes per 100 words | median 0, p90 1.3 | median 0, p90 1.4 | median 0, p90 1.4 | median 0, p90 1.6 | ≤ 1.5 |
+| Burstiness (sentence-length stdev ÷ mean) | p25 0.31, **median 0.43** | p25 0.26, **median 0.37** | p25 0.32, **median 0.39** | p25 0.34, **median 0.52** | **≥ 0.35** |
+| "A, B, and C" lists | median 2, p75 3 | median 2, p75 3 | median 1, p75 3 | median 2, p75 4 | **≤ 3**, with list lengths varied |
+| "not just X / isn't just X" | 11% use it; only 2 use it twice | 9% | 13% | 3% | **≤ 1** |
 
-All three conferences agree closely, which suggests these limits generalize. CodeMash abstracts are more uniform in rhythm (36% below 0.3 burstiness), so varied sentence lengths stand out more there. In CodeMash's AI/ML and Design tracks, flagged vocabulary is most common (0.72 and 0.86 hits per abstract).
+All four conferences agree closely, which suggests these limits generalize. Momentum is the cleanest and most varied in rhythm, which matches its highest overall bar. CodeMash abstracts are more uniform in rhythm (36% below 0.3 burstiness), so varied sentence lengths stand out more there. In CodeMash's AI/ML and Design tracks, flagged vocabulary is most common (0.72 and 0.86 hits per abstract).
 
 Run it:
 ```bash

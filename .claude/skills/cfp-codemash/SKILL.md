@@ -9,7 +9,16 @@ You are a CFP coach targeting **CodeMash**, a Midwest developer conference held 
 
 **Always load `cfp-speaker-abstracts` first** (`.claude/skills/cfp-speaker-abstracts/SKILL.md`) and follow its 5-step workflow, including the Category Ranking. Where the numbers below differ from its defaults, **these win.**
 
-Data basis: the 139 accepted 2026 sessions in the 13 technical tracks (Jan 13–16, 2026), the latest year on file. Full stats: [references/codemash-2026-profile.md](references/codemash-2026-profile.md). CodeMash's edition year is the January it runs in. When a new year is added, follow `docs/data-conventions.md`.
+Data basis: the 139 accepted 2026 sessions in the 13 technical tracks (Jan 13–16, 2026), the latest year on file. Full stats: [references/codemash-2026-profile.md](references/codemash-2026-profile.md). CodeMash's edition year is the January it runs in.
+
+**Years on file:** 2025 (149, [profile](references/codemash-2025-profile.md)) and 2026 (139). What changed is in [references/codemash-trends.md](references/codemash-trends.md):
+- AI went from 10% to 29% of sessions.
+- *AI/ML/Data* split into *AI/ML* + *Databases*.
+- Payoff lines went from 17% to 37%.
+- The overall bar was stable (+2.8 comparable).
+- **6 talks from 2025 were re-accepted in 2026, 5 of them unchanged.**
+
+New years follow `docs/data-conventions.md`.
 
 ## 1. CodeMash at a glance (2026)
 
@@ -27,7 +36,7 @@ Excluded from the analysis because they aren't developer-talk CFP slots: Makersp
 
 **Before drafting, confirm** the current year's CFP dates, formats, and tracks with the user. Re-fetch when a new schedule is published:
 ```bash
-python3 tools/fetch_zoho_backstage.py https://events.codemash.org/<year>CodeMashConference data/codemash-<year>.json --exclude-tracks "Meals & Entertainment,Sponsors,CodeMash On-Air,Makerspace,KidzMash Sessionz,KidzMash Divez"
+python3 tools/fetch_zoho_backstage.py https://events.codemash.org/<year>CodeMashConference data/codemash-<year>.json --exclude-regex "^(Makerspace|KidzMash|Sponsors|Meals|CodeMash On-Air)"
 ```
 
 ## 2. CodeMash targets (override defaults)
@@ -101,7 +110,14 @@ For an AI-angle talk: ≤ 20% AI → 5 · 21–40% → 4 · 41–60% → 3 · 61
 
 For a non-AI talk, score openness on track size minus topic saturation (e.g., Azure in Databases/DevOps/Web), and say which you used.
 
-## 4. Submitting the same talk to KCDC and CodeMash
+## 4. Resubmitting a past CodeMash talk
+
+CodeMash re-accepts proven talks: 6 of 2025's talks returned in 2026, 5 word-for-word (hands-on labs and evergreen fundamentals such as *Thinking Architecturally*, *Mad Scientist Lab*, *The Angular Renaissance*). If a talk was accepted and went well, resubmitting it is reasonable. Still:
+- Re-check the track. *Is Vector Search Right for Me?* moved from *AI/ML/Data* to *Databases* when the track split.
+- Add the payoff line most 2025 abstracts lacked. It's now expected (37%).
+- Clone-check against all years (`--against "data/codemash-*.json"`) only to confirm it's *your* earlier talk, not someone else's.
+
+## 5. Submitting the same talk to KCDC and CodeMash
 
 Seven 2026 talks were accepted at both conferences, six with **identical abstracts**, often in *different* tracks:
 
@@ -119,7 +135,7 @@ So:
 3. **Consider a Pre-Compiler version.** CodeMash has 32 four-hour slots; KCDC has 19 half-day and 5 full-day slots.
 4. If you rewrite, run `score_sessions.py draft` against **each** conference's data. Track vocabularies differ.
 
-## 5. CodeMash review pass (in addition to the base rubric)
+## 6. CodeMash review pass (in addition to the base rubric)
 
 - [ ] Track chosen on purpose using the openness table; title uses that track's vocabulary
 - [ ] Word count within the CodeMash target (`check_abstract.py --targets …`)

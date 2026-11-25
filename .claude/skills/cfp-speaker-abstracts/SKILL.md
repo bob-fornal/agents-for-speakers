@@ -13,9 +13,18 @@ These rules are conference-agnostic. They're grounded in **342 accepted sessions
 
 | Conference | Skill | Data (latest year) | Platform / fetcher |
 |---|---|---|---|
-| KCDC | `cfp-kcdc` | 2026: 203 sessions | Sessionize · `fetch_sessionize.py` |
-| CodeMash | `cfp-codemash` | 2026: 139 sessions | Zoho Backstage · `fetch_zoho_backstage.py` |
+| KCDC | `cfp-kcdc` | **2026**: 203 sessions · also 2024: 200 (2025 unrecoverable) | Sessionize · `fetch_sessionize.py` |
+| CodeMash | `cfp-codemash` | **2026**: 139 sessions · also 2025: 149 | Zoho Backstage · `fetch_zoho_backstage.py` |
 | Anything else | this skill only | — | add one: `docs/adding-a-conference.md` |
+
+**What changed across years (both conferences):**
+- **AI roughly tripled:** KCDC 12% → 44% (2024 → 2026), CodeMash 10% → 29% (2025 → 2026).
+- **Explicit payoff lines became the norm:** KCDC 10% → 34%, CodeMash 17% → 37%.
+- **The "AI accent" faded:** abstracts with zero flagged words went from 71% to 79% (KCDC) and 62% to 78% (CodeMash); *delve* nearly vanished.
+- **KCDC's bar rose** (+12.5 comparable points, abstracts +36 words); **CodeMash's held steady** (+2.8).
+- **Repeats:** CodeMash re-accepted 6 prior-year talks, 5 unchanged; KCDC re-accepted none across two editions.
+
+Write to the latest year's bar. Details are in each conference's `*-trends.md`.
 
 **Every number belongs to a conference-year.** When you cite a statistic, say which (for example, "KCDC 2026: 51% use a colon"). As more years are added, conference skills give the **latest** year's numbers and track earlier years in a trends file. Benchmarks use one year; clone checks use all years. See `docs/data-conventions.md`.
 
@@ -153,7 +162,7 @@ Reusing a talk is normal. **Seven 2026 talks were accepted at both KCDC and Code
 2. **Resize to each conference's word target.** A KCDC-length abstract (~165–200 words) usually needs trimming by 20–40 words for CodeMash.
 3. **Re-tune the register** to the conference culture (table above): more learning outcomes for CodeMash, more production evidence for KCDC.
 4. **Benchmark against each conference separately.** Run `score_sessions.py draft` with each conference's data; track vocabularies differ. Example: the KCDC worked example's v4 is #1 for Human Skills at KCDC (+43.3) and #1 for Career Development at CodeMash (+39.2), but it's 9 words over CodeMash's target.
-5. **Resubmitting next year:** clone-check against every past year (`--against "data/<conf>-*.json"`). If the talk was accepted before, refresh the evidence (new numbers, what changed since) rather than resubmitting it unchanged.
+5. **Resubmitting next year:** clone-check against every past year (`--against "data/<conf>-*.json"`). Conferences differ here. CodeMash re-accepted 5 talks word-for-word from 2025 to 2026, while KCDC re-accepted none from 2024 to 2026 (returning speakers brought new talks). Check the conference's trends file. Either way, refresh the evidence (new numbers, what changed since) and add a payoff line if the old abstract lacked one.
 
 ## 7. Honesty guardrails
 

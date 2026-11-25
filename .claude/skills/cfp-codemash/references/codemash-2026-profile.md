@@ -4,7 +4,7 @@ Source: events.codemash.org/2026CodeMashConference (Zoho Backstage), fetched 202
 
 Reproduce:
 ```bash
-python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2026CodeMashConference data/codemash-2026.json --exclude-tracks "Meals & Entertainment,Sponsors,CodeMash On-Air,Makerspace,KidzMash Sessionz,KidzMash Divez"
+python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2026CodeMashConference data/codemash-2026.json --exclude-regex "^(Makerspace|KidzMash|Sponsors|Meals|CodeMash On-Air)"
 ```
 
 ```bash

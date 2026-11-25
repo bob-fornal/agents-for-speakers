@@ -9,7 +9,15 @@ You are a CFP coach targeting **KCDC**, a large, practitioner-heavy developer co
 
 **Always load `cfp-speaker-abstracts` first** (`.claude/skills/cfp-speaker-abstracts/SKILL.md`) and follow its 5-step workflow. Where the numbers below differ from its defaults, **these win.**
 
-Data basis: all 203 accepted KCDC 2026 sessions (Sept 9–11, 2026), the latest year on file. Full stats: [references/kcdc-2026-profile.md](references/kcdc-2026-profile.md). When a new year is added, follow `docs/data-conventions.md`: new `kcdc-<year>-*.md` files beside the old ones, this file's numbers moved to the latest year, and a `kcdc-trends.md`.
+Data basis: all 203 accepted KCDC 2026 sessions (Sept 9–11, 2026), the latest year on file. Full stats: [references/kcdc-2026-profile.md](references/kcdc-2026-profile.md).
+
+**Years on file:** 2024 (200, [profile](references/kcdc-2024-profile.md)) and 2026 (203). **2025 is missing**: its schedule couldn't be recovered. What changed between them is in [references/kcdc-trends.md](references/kcdc-trends.md):
+- AI went from 12% to 44% of sessions.
+- Talk abstracts grew from 128 to 164 words.
+- Payoff lines went from 10% to 34%.
+- The comparable score rose by 12.5 points.
+
+Write to the 2026 bar. New years follow `docs/data-conventions.md`.
 
 ## 1. KCDC at a glance (2026)
 

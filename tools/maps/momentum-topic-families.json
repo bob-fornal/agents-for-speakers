@@ -1,5 +1,5 @@
 {
-  "_comment": "Momentum Dev Con has 21 multi-select topics instead of tracks. The fetcher assigns each session's track from its FIRST-listed topic via this map (derived grouping, not the conference's own). All topics are kept in `tags`.",
+  "_comment": "Momentum Dev Con has 21 multi-select topics instead of tracks. The fetcher assigns each session's track from its FIRST-listed topic via this map (derived grouping, not the conference's own). All topics are kept in `tags`. 2025 used different topic names; they're mapped to the same families.",
   "AI - Dev Tools": "AI",
   "AI - Other": "AI",
   "AI - Product & Features": "AI",
@@ -20,5 +20,11 @@
   "Languages & Frameworks": "Languages & Frameworks",
   "Security": "Security",
   "Hardware & IoT": "Other",
-  "Other": "Other"
+  "Other": "Other",
+  "AI Tooling": "AI",
+  "Professional Skills": "Career & Leadership",
+  "Agile & Project Management": "Career & Leadership",
+  "Architecture / Patterns & Practices": "Architecture & Platform",
+  "Data & Databases": "Architecture & Platform",
+  "Testing / Quality": "Quality & Craft"
 }

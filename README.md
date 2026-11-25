@@ -5,10 +5,10 @@ Claude Code skills that help you write conference talk **titles and abstracts** 
 Four Midwest conferences are covered so far:
 - **KCDC:** 2026 (203 sessions) and 2024 (200). The 2025 schedule couldn't be recovered.
 - **CodeMash:** 2026 (139 developer sessions) and 2025 (149).
-- **Stir Trek:** 2026 (55 sessions). Its site labels this lineup "2027".
-- **Momentum Dev Con:** 2026 (36 sessions: 30 full talks and 6 lightning talks).
+- **Stir Trek:** 2026 (55 sessions; the site now labels this lineup "2027") and 2025 (63).
+- **Momentum Dev Con:** 2026 (36 sessions: 30 full talks and 6 lightning talks) and 2025 (35).
 
-That's 782 accepted sessions in all, plus year-over-year trends and cross-conference comparisons. The fetch tools cover **Sessionize**, **Zoho Backstage**, **Gatsby sites built from Sessionize**, and Stir Trek's static site.
+That's 880 accepted sessions in all, plus year-over-year trends and cross-conference comparisons. The fetch tools cover **Sessionize**, **Zoho Backstage**, **Gatsby sites built from Sessionize**, and Stir Trek's static site.
 
 ---
 
@@ -52,6 +52,14 @@ python3 tools/fetch_zoho_backstage.py https://events.codemash.org/2025CodeMashCo
 
 ```bash
 python3 tools/fetch_stirtrek.py https://stirtrek.com/sessions/ data/stirtrek-2026.json
+```
+
+```bash
+python3 tools/fetch_stirtrek.py "https://web.archive.org/web/20251016034727id_/https://stirtrek.com/sessions/" data/stirtrek-2025.json --base-url https://stirtrek.com/
+```
+
+```bash
+python3 tools/fetch_gatsby_sessionize.py https://2025.momentumdevcon.com/sessions data/momentum-2025.json --topic-map tools/maps/momentum-topic-families.json --exclude-formats "Sponsor|Keynote"
 ```
 
 ```bash
@@ -324,24 +332,24 @@ On the circuit, Momentum shares 3 talks with Stir Trek and 1 each with KCDC and 
 
 ## Trends across years
 
-Full detail: [`kcdc-trends.md`](.claude/skills/cfp-kcdc/references/kcdc-trends.md), [`codemash-trends.md`](.claude/skills/cfp-codemash/references/codemash-trends.md).
+Full detail: [`kcdc-trends.md`](.claude/skills/cfp-kcdc/references/kcdc-trends.md), [`codemash-trends.md`](.claude/skills/cfp-codemash/references/codemash-trends.md), [`stirtrek-trends.md`](.claude/skills/cfp-stirtrek/references/stirtrek-trends.md), [`momentum-trends.md`](.claude/skills/cfp-momentum/references/momentum-trends.md).
 
-| Signal | KCDC 2024 → 2026 | CodeMash 2025 → 2026 |
-|---|---|---|
-| Sessions involving AI | 12% → **44%** | 10% → **29%** |
-| "Leave / walk away with" payoff | 10% → **34%** | 17% → **37%** |
-| Zero flagged AI words | 71% → 79% | 62% → 78% |
-| Talk abstract median | 128 → 164 words | 142 → 147 words |
-| Comparable score (excludes Fit and Specificity; /150) | 71.0 → **83.5** (+12.5) | 75.9 → 78.7 (+2.8) |
-| Prior-year talks re-accepted | 0 | **6** (5 word-for-word) |
-| Returning speakers | 49 of 145 | 41 of 111 |
-| Track changes | + Agentic SDLC; JavaScript → Front-End; − Mobile | AI/ML/Data → AI/ML + Databases |
+| Signal | KCDC 2024 → 2026 | CodeMash 2025 → 2026 | Stir Trek 2025 → 2026 | Momentum 2025 → 2026 |
+|---|---|---|---|---|
+| Sessions involving AI | 12% → **44%** | 10% → **29%** | 11% → **38%** | 25% → **53%** |
+| "Leave / walk away with" payoff | 10% → **34%** | 17% → **37%** | 13% → **38%** | 34% → 39% |
+| Zero flagged AI words | 71% → 79% | 62% → 78% | 73% → 82% | 66% → **94%** |
+| Talk abstract median | 128 → 164 words | 142 → 147 | 124 → 133 | 131 → 181 |
+| Comparable score (excludes Fit and Specificity; /150) | 71.0 → **83.5** (+12.5) | 75.9 → 78.7 (+2.8) | 73.5 → 79.5 (+6.0) | 80.3 → **86.0** (+5.7) |
+| Prior-year talks re-accepted | 0 | **6** (5 word-for-word) | 0 | 0 |
+| Returning speakers | 49 of 145 | 41 of 111 | 15 of 48 | 10 of 32 |
+| Track changes | + Agentic SDLC; JavaScript → Front-End; − Mobile | AI/ML/Data → AI/ML + Databases | 11 categories → 9 outcome-based | 14 → 21 topics; formats (incl. lightning) added |
 
-- **AI roughly tripled at both conferences**, and both now give it its own track(s).
-- **The payoff line went from optional to expected.** About a third of accepted abstracts now say what you leave with.
+- **AI roughly doubled to tripled at every conference**, and each now gives it its own track or topic group.
+- **The payoff line went from optional to expected.** About a third or more of accepted abstracts now say what you leave with.
 - **The "AI accent" peaked in 2024–25 and faded.** *delve* appeared in 16 KCDC 2024 abstracts and 1 in 2026.
-- **KCDC's bar rose; CodeMash's held.** KCDC abstracts became longer, more structured and more explicit. CodeMash changed topics, not craft.
-- **Resubmission works differently.** CodeMash re-accepts proven talks unchanged; KCDC's returning speakers brought new ones.
+- **The bar rose everywhere.** It rose most at KCDC (+12.5 over two editions) and least at CodeMash (+2.8). Momentum also changed register, from "you'll learn" course descriptions to first-person pitches.
+- **Only CodeMash re-accepts its own prior-year talks.** KCDC, Stir Trek and Momentum took new talks from returning speakers. Yet talks move freely *between* conferences: Stir Trek 2025 ran 11 CodeMash 2025 talks unchanged.
 
 ---
 
@@ -418,6 +426,9 @@ Refresh each year: fetch the new schedule to a **new** `data/<conf>-<year>.json`
       stirtrek-tracks.md            9 categories + Stir Trek ↔ CodeMash ↔ KCDC map
       stirtrek-exemplars.md         6 accepted sessions annotated move-by-move
       stirtrek-2026-track-scores.md Category averages (the bar to beat)
+      stirtrek-2025-profile.md      2025 statistics, compared with 2026
+      stirtrek-2025-track-scores.md 2025 category averages (history)
+      stirtrek-trends.md            2025 → 2026 changes
   cfp-momentum/               Momentum Dev Con skill: extends the base skill
     SKILL.md
     references/
@@ -425,6 +436,9 @@ Refresh each year: fetch the new schedule to a **new** `data/<conf>-<year>.json`
       momentum-tracks.md            21 topics → 8 derived families + topic map to the other conferences
       momentum-exemplars.md         6 accepted sessions annotated move-by-move
       momentum-2026-track-scores.md Category averages by family (the bar to beat)
+      momentum-2025-profile.md      2025 statistics, compared with 2026
+      momentum-2025-track-scores.md 2025 family averages (history)
+      momentum-trends.md            2025 → 2026 changes
   humanize-writing/           Copied from agent-bob (unchanged)
   write-like-bob/             Copied from agent-bob (unchanged)
 tools/                        fetch, analyze, check, score (see Tools)
@@ -444,7 +458,7 @@ data/                         Fetched session data, one file per conference-year
 - **Accepted sessions only.** There's no rejected baseline, so patterns describe what got in, not what *caused* acceptance. The guidance leans on patterns that are both common in accepted abstracts and consistent with long-standing reviewer advice.
 - **Speaker reputation.** Well-known speakers get in with plain titles and loose abstracts. Several accepted abstracts have typos or weak openers.
 - **Automated scores are rough.** They're reproducible and comparable, but crude about meaning: a clever-sounding contrarian title scores the same as a real insight. That's why the ranking keeps manual scores alongside them and flags disagreements.
-- **Four conferences; two editions each for KCDC and CodeMash (KCDC 2025 missing), one each for Stir Trek and Momentum.** Momentum's families are derived from speaker-chosen topics and most are tiny. The topic mix, especially the AI share, changes fast. Add each new year beside the old; see [`docs/data-conventions.md`](docs/data-conventions.md).
+- **Four conferences, two editions each (KCDC's are 2024 and 2026; its 2025 schedule is missing).** Momentum's families are derived from speaker-chosen topics and most are tiny. The topic mix, especially the AI share, changes fast. Add each new year beside the old; see [`docs/data-conventions.md`](docs/data-conventions.md).
 - **Some measures can't be compared across conferences.** Specificity and Track fit are graded against each conference's own sessions, so compare totals within a conference, not between them.
 - **No predictions.** Rankings explain a draft and compare it with accepted work; they don't predict acceptance.
 

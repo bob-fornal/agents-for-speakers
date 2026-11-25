@@ -29,6 +29,17 @@ Searched without success:
 - **Filtering:** 56 program items → 55 sessions. The one panel ("Will AI change who gets to be a developer?") is excluded as organizer-arranged. Meals, movie trailers and a "Pending" slot have no session link.
 - **Result:** 55 sessions, 48 speakers, 9 categories, one session type in hourly slots.
 
+### Stir Trek 2025
+- **Sessions list:** Wayback Machine snapshot `20251016034727` of https://stirtrek.com/sessions/ ("sessions for 2025", `/speakers/2025/` paths). The live site no longer has it.
+- **Abstracts:** live speaker pages under `/speakers/2025/`, which still exist. One speaker's live page now shows a newer talk, so `fetch_stirtrek.py` fell back to the archived speaker page in the same snapshot.
+- **Labels:** archived copies show that labels matched the edition at event time (2025 in 2025; 2026 in April 2026). The "2027" label on the 2026 lineup came later.
+- **Result:** 63 sessions (no panels), 59 speakers, 11 categories.
+
+### Momentum Dev Con 2025
+- **Page:** https://2025.momentumdevcon.com/sessions, the conference's own archive site, linked from "Prior Years" on the main site. Sessions are dated October 16, 2025.
+- **Differences from 2026:** an older Gatsby query shape (`allSessions`, no `isServiceSession`), no format field (all regular talks; lightning talks not itemized), and 14 topics with different names. Those topics were added to the family map.
+- **Result:** 35 sessions, 34 speakers. There's no keynote or sponsor format to exclude.
+
 ### Momentum Dev Con 2026
 - **Page:** https://momentumdevcon.com/sessions, a Gatsby site built from Sessionize data. Its `/page-data/sessions/page-data.json` lists static-query hashes; `/page-data/sq/d/<hash>.json` holds the sessions (with descriptions) and the schedule (times, rooms). Sessions are dated **October 15, 2026**. The homepage thanks attendees for "Momentum 2026" and promotes October 14, 2027.
 - **Category groups** arrive as numeric IDs only; they're identified by their values as format (Full 45 / Lightning 5 / Keynote 25 / Sponsor 30 minutes), level (Introductory / Intermediate / Advanced) and topics (21 multi-select).

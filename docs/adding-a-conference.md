@@ -18,6 +18,8 @@ python3 tools/fetch_zoho_backstage.py https://events.<domain>/<EventName> data/<
 
 Run it once without `--exclude-tracks` to see every track, then exclude meals, sponsors, kids' programs and the like. Format comes from session length, so check the format counts against the conference's published formats.
 
+**A custom static site** (like Stir Trek): see `tools/fetch_stirtrek.py` for a small fetcher that reads a sessions table plus per-speaker pages. Check that the page's year label matches the edition.
+
 **Neither:** open the agenda in a browser, watch its network requests for the JSON it loads, and write a small fetcher. Or export titles/abstracts by other means into the same JSON shape — a list of `{title, abstract, speakers, format, track}` — and the analyzer will work unchanged.
 
 Prefer **last year's accepted sessions** for the conference you're targeting. Two years is better than one.

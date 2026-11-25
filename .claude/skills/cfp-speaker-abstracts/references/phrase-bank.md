@@ -1,6 +1,6 @@
 # Phrase Bank
 
-Recurring phrases from accepted abstracts, grouped by job. Frequencies are from KCDC 2026 (203 sessions) unless marked; **CodeMash 2026 (139)** figures are added where the two conferences differ noticeably. These are **connective tissue** — they make an abstract read as "normal and competent." They never substitute for specifics.
+Recurring phrases from accepted abstracts, grouped by job. Frequencies are from KCDC 2026 (203 sessions) unless marked; **CodeMash 2026 (139)** and **Stir Trek 2026 (55)** figures are added where they differ noticeably. Stir Trek uses "this session/talk" most (89%) and "you'll learn" in 33%. These are **connective tissue** — they make an abstract read as "normal and competent." They never substitute for specifics.
 
 Rule of thumb: use **at most one stock phrase per move**, and surround it with concrete nouns.
 

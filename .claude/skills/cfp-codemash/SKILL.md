@@ -56,7 +56,7 @@ python3 tools/fetch_zoho_backstage.py https://events.codemash.org/<year>CodeMash
 
 Pass these to the checker: `--targets 120-190` (session) or `--targets 130-200` (Pre-Compiler).
 
-* **Shorter than KCDC.** A KCDC-length abstract (165–200 words) usually needs trimming by 20–40 words.
+* **Shorter than KCDC.** When writing *new* for CodeMash, aim for 120–190. Proven abstracts were accepted at both conferences unchanged, though, so you don't have to trim a KCDC abstract.
 * **3 paragraphs** is most common (32 of 139), but 1-paragraph (28) and 2-paragraph (27) abstracts are nearly as common.
 * **More teaching language than KCDC:** "learn" in 49% (KCDC 35%), "you'll learn / you will learn" 28% (KCDC 17%), "Whether you…" 19% (KCDC 12%).
 * **More question openers:** 20% open with a question (KCDC 13%), often "Ever wonder…" or "Are you tired of…". Use one only if it's sharp.
@@ -131,7 +131,7 @@ Seven 2026 talks were accepted at both conferences, six with **identical abstrac
 
 So:
 1. **Re-pick the track for each conference**, using the track map in [references/codemash-tracks.md](references/codemash-tracks.md) and each conference's openness table.
-2. **Trim for CodeMash.** KCDC-length abstracts often run 20–40 words over CodeMash's targets.
+2. **Trimming is optional.** KCDC-length abstracts can run 20–40 words over CodeMash's target, but all six identical repeats were accepted at their original length. Trim only if the abstract is far outside the range.
 3. **Consider a Pre-Compiler version.** CodeMash has 32 four-hour slots; KCDC has 19 half-day and 5 full-day slots.
 4. If you rewrite, run `score_sessions.py draft` against **each** conference's data. Track vocabularies differ.
 

@@ -1,6 +1,6 @@
 # Title Formulas
 
-Twelve repeatable title shapes, each observed in accepted sessions. Examples are from KCDC 2026, plus CodeMash 2026 where marked **(CM)**. Percentages are KCDC's share of 203 titles (CodeMash's in parentheses where it differs); patterns overlap.
+Twelve repeatable title shapes, each observed in accepted sessions. Examples are from KCDC 2026, plus CodeMash 2026 **(CM)** and Stir Trek 2026 **(ST)** where marked. Percentages are KCDC's share of 203 titles (CodeMash's in parentheses where it differs); patterns overlap.
 
 When generating options, **spread across formulas** — reviewers and speakers both pick better when the options are genuinely different, not five variations of one idea.
 
@@ -80,6 +80,7 @@ Signals a scannable, practical talk. Use real counts; 5–10 is the sweet spot f
 The number *is* the credential. Only use real numbers.
 
 - What I Learned from Testing 10,000 MCP Servers
+- 150K Lines, 0 Unit Tests, No Documentation: How To Work With A Software Landfill **(ST)**
 - Our $1M Cloud Bill: Practical FinOps Mistakes and Lessons Learned
 - A Year of Vibes: The Sequel Nobody Asked For (But Every Enterprise Needs)
 
@@ -93,6 +94,8 @@ Reads like the talk's thesis. Often no colon needed.
 - Performance, Cost, and Carbon Are the Same Problem
 - The Spec Is the Hard Part
 - Waste Is a Bug: The Hidden Inefficiencies in Modern Software
+- LGTM is not a Strategy **(ST)**
+- Productivity Theater: When 'Just Use AI' Becomes a Management Strategy **(ST)**: names a phenomenon
 
 ## 10. Pop culture / pun
 Movie, game, or idiom twist — **always paired with a literal clarifier** unless the topic word is in the pun.

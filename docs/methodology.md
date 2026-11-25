@@ -23,6 +23,12 @@ Searched without success:
 - **Page:** https://events.codemash.org/2025CodeMashConference (event `76186000002828001`, same portal and endpoint as 2026).
 - **Result:** 149 sessions after the same exclusions (111 talks, 32 Pre-Compilers, 6 two-hour workshops), 117 speakers, 12 tracks. 2025 marks cancellations as "(Cancelled)" rather than "[CANCELLED]"; the fetcher handles both.
 
+### Stir Trek 2026
+- **Page:** https://stirtrek.com/sessions/, a static site. The page says "2027" (paths are `/speakers/2027/…`), but per the user it lists the **2026** lineup, so it's filed as `stirtrek-2026`. Each record's `site_label` keeps 2027.
+- **Parsing:** the sessions table gives title, speaker(s) and category; abstracts come from each speaker page's abstract panel, matched by title.
+- **Filtering:** 56 program items → 55 sessions. The one panel ("Will AI change who gets to be a developer?") is excluded as organizer-arranged. Meals, movie trailers and a "Pending" slot have no session link.
+- **Result:** 55 sessions, 48 speakers, 9 categories, one session type in hourly slots.
+
 ### CodeMash 2026
 - **Page:** https://events.codemash.org/2026CodeMashConference — a Zoho Backstage site (event `76186000006678002`, portal `811345730`).
 - **Fetched:** 2026-11-24, via the site's public agenda endpoint `/public/site?…&eventId=…&portalId=…`. It's the same JSON the agenda page loads, and needs no sign-in. The endpoint was found by watching the agenda page's network requests.

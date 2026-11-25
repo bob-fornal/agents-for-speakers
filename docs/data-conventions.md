@@ -8,6 +8,7 @@ We'll track several years of each conference. Every number in this repo belongs 
 |---|---|
 | **One file per conference-year** | `data/<conference>-<year>.json`, lower-case slug: `data/kcdc-2026.json`, `data/codemash-2027.json` |
 | **The year is the edition**, not the fetch date | CodeMash 2026 ran in January 2026; KCDC 2026 in September 2026. Use the year in the event's own name |
+| **Site labels can disagree with the edition** | Stir Trek's site labels its 2026 lineup "2027". File under the edition the talks were given (`stirtrek-2026.json`), keep the site's label in `site_label`, and confirm with the user when a page's year looks off |
 | **Every record is stamped** | Fetchers add `"conference"` and `"year"` to each session. The loader also infers them from the filename for older files, and refuses files that have neither |
 | **Never overwrite a past year** | Fetchers refuse to write over an existing file. `--force` is only for re-fetching the *same* year (schedule edits, cancellations) |
 | **Missing years are recorded, not faked** | If an edition's schedule can't be recovered (KCDC 2025), say so in the next profile and the trends file, and label trend changes by the editions they actually span |
